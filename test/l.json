@@ -1,0 +1,71 @@
+------ normal ------
+
+------ deuteranopia ------
+
+------ protanopia ------
+Zoom 2 [ "background,pier_area" ] hsl(30, 44%, 96%) and [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) are too similar
+Zoom 3 [ "background,pier_area" ] hsl(30, 44%, 96%) and [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) are too similar
+Zoom 4 [ "background,pier_area" ] hsl(30, 44%, 96%) and [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) are too similar
+Zoom 5 [ "background,pier_area" ] hsl(30, 44%, 96%) and [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) are too similar
+Zoom 6 [ "background,urbanized-area,pier_area" ] hsl(30, 44%, 96%) and [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) are too similar
+Zoom 7 [ "background,pier_area" ] hsl(30, 44%, 96%) and [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) are too similar
+Zoom 8 [ "background,pier_area" ] hsl(30, 44%, 96%) and [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) are too similar
+Zoom 9 [ "background,pier_area" ] hsl(30, 44%, 96%) and [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) are too similar
+Zoom 10 [ "background,pier_area" ] hsl(30, 44%, 96%) and [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) are too similar
+Zoom 11 [ "background,pier_area" ] hsl(30, 44%, 96%) and [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) are too similar
+Zoom 12 [ "background,pier_area" ] hsl(30, 44%, 96%) and [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) are too similar
+Zoom 13 [ "background,pier_area" ] hsl(30, 44%, 96%) and [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) are too similar
+Zoom 14 [ "background,pier_area" ] hsl(30, 44%, 96%) and [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) are too similar
+Zoom 15 [ "background,pier_area" ] hsl(30, 44%, 96%) and [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) are too similar
+Zoom 16 [ "background,pier_area" ] hsl(30, 44%, 96%) and [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) are too similar
+Zoom 17 [ "background,pier_area" ] hsl(30, 44%, 96%) and [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) are too similar
+Zoom 18 [ "background,pier_area" ] hsl(30, 44%, 96%) and [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) are too similar
+Zoom 19 [ "background,pier_area" ] hsl(30, 44%, 96%) and [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) are too similar
+Zoom 20 [ "background,pier_area" ] hsl(30, 44%, 96%) and [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) are too similar
+Zoom 21 [ "background,pier_area" ] hsl(30, 44%, 96%) and [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) are too similar
+Zoom 22 [ "background,pier_area" ] hsl(30, 44%, 96%) and [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) are too similar
+
+------ tritanopia ------
+Zoom 2 [ "background,pier_area" ] hsl(30, 44%, 96%) and [ "airport_fill" ] hsl(250, 41%, 95%) are too similar
+Zoom 2 [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) and [ "water,==,get,brunnel,tunnel" ] hsl(211, 50%, 85%) are too similar
+Zoom 3 [ "background,pier_area" ] hsl(30, 44%, 96%) and [ "airport_fill" ] hsl(250, 41%, 95%) are too similar
+Zoom 3 [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) and [ "water,==,get,brunnel,tunnel" ] hsl(211, 50%, 85%) are too similar
+Zoom 4 [ "background,pier_area" ] hsl(30, 44%, 96%) and [ "airport_fill" ] hsl(250, 41%, 95%) are too similar
+Zoom 4 [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) and [ "water,==,get,brunnel,tunnel" ] hsl(211, 50%, 85%) are too similar
+Zoom 5 [ "background,pier_area" ] hsl(30, 44%, 96%) and [ "airport_fill" ] hsl(250, 41%, 95%) are too similar
+Zoom 5 [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) and [ "water,==,get,brunnel,tunnel" ] hsl(211, 50%, 85%) are too similar
+Zoom 6 [ "background,urbanized-area,pier_area" ] hsl(30, 44%, 96%) and [ "airport_fill" ] hsl(250, 41%, 95%) are too similar
+Zoom 6 [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) and [ "water,==,get,brunnel,tunnel" ] hsl(211, 50%, 85%) are too similar
+Zoom 7 [ "background,pier_area" ] hsl(30, 44%, 96%) and [ "airport_fill" ] hsl(250, 41%, 95%) are too similar
+Zoom 7 [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) and [ "water,==,get,brunnel,tunnel" ] hsl(211, 50%, 85%) are too similar
+Zoom 8 [ "background,pier_area" ] hsl(30, 44%, 96%) and [ "airport_fill" ] hsl(250, 41%, 95%) are too similar
+Zoom 8 [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) and [ "water,==,get,brunnel,tunnel" ] hsl(211, 50%, 85%) are too similar
+Zoom 9 [ "background,pier_area" ] hsl(30, 44%, 96%) and [ "airport_fill" ] hsl(250, 41%, 95%) are too similar
+Zoom 9 [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) and [ "water,==,get,brunnel,tunnel" ] hsl(211, 50%, 85%) are too similar
+Zoom 10 [ "background,pier_area" ] hsl(30, 44%, 96%) and [ "airport_fill" ] hsl(250, 41%, 95%) are too similar
+Zoom 10 [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) and [ "water,==,get,brunnel,tunnel" ] hsl(211, 50%, 85%) are too similar
+Zoom 11 [ "background,pier_area" ] hsl(30, 44%, 96%) and [ "airport_fill" ] hsl(250, 41%, 95%) are too similar
+Zoom 11 [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) and [ "water,==,get,brunnel,tunnel" ] hsl(211, 50%, 85%) are too similar
+Zoom 12 [ "background,pier_area" ] hsl(30, 44%, 96%) and [ "airport_fill" ] hsl(250, 41%, 95%) are too similar
+Zoom 12 [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) and [ "water,==,get,brunnel,tunnel" ] hsl(211, 50%, 85%) are too similar
+Zoom 13 [ "background,pier_area" ] hsl(30, 44%, 96%) and [ "airport_fill" ] hsl(250, 41%, 95%) are too similar
+Zoom 13 [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) and [ "water,==,get,brunnel,tunnel" ] hsl(211, 50%, 85%) are too similar
+Zoom 14 [ "background,pier_area" ] hsl(30, 44%, 96%) and [ "airport_fill" ] hsl(250, 41%, 95%) are too similar
+Zoom 14 [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) and [ "water,==,get,brunnel,tunnel" ] hsl(211, 50%, 85%) are too similar
+Zoom 15 [ "background,pier_area" ] hsl(30, 44%, 96%) and [ "airport_fill" ] hsl(250, 41%, 95%) are too similar
+Zoom 15 [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) and [ "water,==,get,brunnel,tunnel" ] hsl(211, 50%, 85%) are too similar
+Zoom 16 [ "background,pier_area" ] hsl(30, 44%, 96%) and [ "airport_fill" ] hsl(250, 41%, 95%) are too similar
+Zoom 16 [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) and [ "water,==,get,brunnel,tunnel" ] hsl(211, 50%, 85%) are too similar
+Zoom 17 [ "background,pier_area" ] hsl(30, 44%, 96%) and [ "airport_fill" ] hsl(250, 41%, 95%) are too similar
+Zoom 17 [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) and [ "water,==,get,brunnel,tunnel" ] hsl(211, 50%, 85%) are too similar
+Zoom 18 [ "background,pier_area" ] hsl(30, 44%, 96%) and [ "airport_fill" ] hsl(250, 41%, 95%) are too similar
+Zoom 18 [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) and [ "water,==,get,brunnel,tunnel" ] hsl(211, 50%, 85%) are too similar
+Zoom 19 [ "background,pier_area" ] hsl(30, 44%, 96%) and [ "airport_fill" ] hsl(250, 41%, 95%) are too similar
+Zoom 19 [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) and [ "water,==,get,brunnel,tunnel" ] hsl(211, 50%, 85%) are too similar
+Zoom 20 [ "background,pier_area" ] hsl(30, 44%, 96%) and [ "airport_fill" ] hsl(250, 41%, 95%) are too similar
+Zoom 20 [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) and [ "water,==,get,brunnel,tunnel" ] hsl(211, 50%, 85%) are too similar
+Zoom 21 [ "background,pier_area" ] hsl(30, 44%, 96%) and [ "airport_fill" ] hsl(250, 41%, 95%) are too similar
+Zoom 21 [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) and [ "water,==,get,brunnel,tunnel" ] hsl(211, 50%, 85%) are too similar
+Zoom 22 [ "background,pier_area" ] hsl(30, 44%, 96%) and [ "airport_fill" ] hsl(250, 41%, 95%) are too similar
+Zoom 22 [ "protected-area_fill,park_fill" ] hsl(136, 41%, 89%) and [ "water,==,get,brunnel,tunnel" ] hsl(211, 50%, 85%) are too similar
+

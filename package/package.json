@@ -1,11 +1,11 @@
 {
-  "name": "color-blind-map-colors",
+  "name": "color-unclasher",
   "version": "1.0.0",
   "type": "module",
   "description": "",
   "main": "index.js",
   "bin": {
-    "color-blind-map-colors": "./index.js"
+    "color-unclasher": "./index.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
