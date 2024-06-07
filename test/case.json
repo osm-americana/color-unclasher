@@ -1,0 +1,43 @@
+{
+  "version": 8,
+  "sources": {
+    "my-source": {
+      "type": "geojson",
+      "data": "path/to/your/data.geojson"
+    }
+  },
+  "layers": [
+    {
+      "id": "background",
+      "type": "background",
+      "paint": { "background-color": "hsl(30, 44%, 96%)" },
+      "layout": { "visibility": "visible" }
+    },
+    {
+      "id": "landuse_hospital",
+      "type": "fill",
+      "source-layer": "water",
+      "paint": {
+        "fill-color": "#FFDDDD"
+      }
+    },
+    {
+      "id": "water",
+      "type": "fill",
+      "paint": {
+        "fill-color": [
+          "case",
+          [
+            "any",
+            ["==", ["get", "intermittent"], 1],
+            ["==", ["get", "brunnel"], "tunnel"]
+          ],
+          "hsl(211, 60%, 85%)",
+          "hsl(211, 50%, 85%)"
+        ]
+      },
+      "source": "openmaptiles",
+      "source-layer": "water"
+    }
+  ]
+}

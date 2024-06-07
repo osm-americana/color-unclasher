@@ -1,0 +1,64 @@
+{
+  "version": 8,
+  "sources": {
+    "my-source": {
+      "type": "geojson",
+      "data": "path/to/your/data.geojson"
+    }
+  },
+  "layers": [
+    {
+      "id": "background",
+      "type": "background",
+      "paint": { "background-color": "hsl(30, 44%, 96%)" },
+      "layout": { "visibility": "visible" }
+    },
+    {
+      "id": "landuse_school",
+      "type": "fill",
+      "source-layer": "landuse",
+      "paint": {
+        "fill-color": "#FFC7E2"
+      }
+    },
+    {
+      "id": "landuse_errr",
+      "type": "fill",
+      "source-layer": "landuse",
+      "paint": {
+        "fill-color": [
+          "interpolate",
+          ["linear"],
+          ["zoom"],
+          5,
+          "#ff0000",
+          10,
+          "#00ff00",
+          15,
+          "#0000ff"
+        ]
+      }
+    },
+    {
+      "id": "landuse_hospital",
+      "type": "fill",
+      "source-layer": "meh",
+      "paint": {
+        "fill-color": "#FFDDDD"
+      }
+    },
+    {
+      "id": "landuse_hospital",
+      "type": "fill",
+      "source-layer": "meh",
+      "paint": {
+        "fill-color": {
+          "stops": [
+            [7, "rgba(133,192,249,0.5)"],
+            [8, "rgba(15,32,128,1)"]
+          ]
+        }
+      }
+    }
+  ]
+}
