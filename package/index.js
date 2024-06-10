@@ -2,7 +2,7 @@
 
 import commandLine from "./utils/cli/commandLine.js";
 import distinguishHex from "./utils/module/getDarker.js";
-import adjustRGB from "./utils/module/adjustRGB";
+import adjustRGB from "./utils/module/adjustRGB.js";
 
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
@@ -14,7 +14,7 @@ const entryScript = require.resolve(process.argv[1]);
 
 if (currentDir === dirname(entryScript)) {
   commandLine(process);
-} 
+}
 
 export default {
   distinguishHex,

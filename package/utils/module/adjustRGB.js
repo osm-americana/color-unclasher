@@ -1,61 +1,6 @@
 import colorBlind from "color-blind";
 import chroma from "chroma-js";
-import { returnColorInTargetFormat } from "./chroma.js";
-
-function adjustColorComponent(
-  color2,
-  color2Format,
-  color1Blind,
-  component,
-  increment,
-  mode,
-  threshHold
-) {
-  let adjustedColor = chroma(color2).rgb();
-  const index = { red: 0, green: 1, blue: 2 }[component];
-  let fail = false;
-
-  while (true) {
-    adjustedColor[index] = Math.max(
-      0,
-      Math.min(255, adjustedColor[index] + increment)
-    );
-    const adjustedColorBlind = convertToMode(chroma(adjustedColor), mode);
-    const deltaE = chroma.deltaE(color1Blind, adjustedColorBlind);
-
-    if (deltaE > threshHold) {
-      return chroma(adjustedColor);
-    }
-
-    if (
-      (increment > 0 && adjustedColor[index] === 255) ||
-      (increment < 0 && adjustedColor[index] === 0)
-    ) {
-      fail = true;
-      break;
-    }
-  }
-
-  if (fail) {
-    return "----";
-  }
-
-  return returnColorInTargetFormat(adjustedColor, color2Format);
-}
-
-function convertToMode(color, mode) {
-    switch (mode) {
-    case "deuteranopia":
-      return colorBlind.deuteranopia(color);
-    case "protanopia":
-      return colorBlind.protanopia(color);
-    case "tritanopia":
-      return colorBlind.tritanopia(color);
-    default:
-      console.error("Unsupported color simulation");
-      process.exit(1);
-    }
-}
+import { returnColorInTargetFormat, getColorModel } from "./color.js";
 
 /* 
 Example usage:
@@ -78,7 +23,7 @@ Result:
 export default function adjustRGB(color1, color2, mode, threshHold = 7) {
   const color1Blind = convertToMode(color1, mode);
   const color2Blind = convertToMode(color2, mode);
-  const color2Format = new ColorTranslator(color2);
+  const color2Format = getColorModel(color2);
 
   if (chroma.deltaE(color1Blind, color2Blind) >= threshHold) {
     return `Enough contrast: [${color1}] [${color2}]`;
@@ -98,7 +43,7 @@ export default function adjustRGB(color1, color2, mode, threshHold = 7) {
         component,
         increment,
         mode,
-        threshHold,
+        threshHold
       );
       adjustedColors[
         `${component}_${increment > 0 ? "increase" : "decrease"}`
@@ -107,4 +52,53 @@ export default function adjustRGB(color1, color2, mode, threshHold = 7) {
   }
 
   return adjustedColors;
+}
+
+function adjustColorComponent(
+  color2,
+  color2Format,
+  color1Blind,
+  component,
+  increment,
+  mode,
+  threshHold
+) {
+  let adjustedColor = chroma(color2).rgb();
+  const index = { red: 0, green: 1, blue: 2 }[component];
+
+  while (true) {
+    adjustedColor[index] = Math.max(
+      0,
+      Math.min(255, adjustedColor[index] + increment)
+    );
+    const adjustedColorBlind = convertToMode(chroma(adjustedColor).hex(), mode);
+    const deltaE = chroma.deltaE(color1Blind, adjustedColorBlind);
+
+    if (deltaE > threshHold) {
+      return returnColorInTargetFormat(adjustedColor, color2Format);
+    }
+
+    if (
+      (increment > 0 && adjustedColor[index] === 255) ||
+      (increment < 0 && adjustedColor[index] === 0)
+    ) {
+      break;
+    }
+  }
+
+  return "----";
+}
+
+function convertToMode(color, mode) {
+  switch (mode) {
+    case "deuteranopia":
+      return colorBlind.deuteranopia(color);
+    case "protanopia":
+      return colorBlind.protanopia(color);
+    case "tritanopia":
+      return colorBlind.tritanopia(color);
+    default:
+      console.error("Unsupported color simulation");
+      process.exit(1);
+  }
 }
