@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
 import commandLine from "./utils/cli/commandLine.js";
-import distinguishHex from "./utils/module/getDarker";
+import distinguishHex from "./utils/module/getDarker.js";
+import adjustRGB from "./utils/module/adjustRGB";
 
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
@@ -15,16 +16,7 @@ if (currentDir === dirname(entryScript)) {
   commandLine(process);
 } 
 
-function integer() {
-  return 6;
-}
-
-function color() {
-  return "red";
-}
-
 export default {
-  integer,
-  color,
   distinguishHex,
+  adjustRGB,
 };

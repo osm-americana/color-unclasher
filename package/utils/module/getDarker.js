@@ -99,5 +99,5 @@ export default function distinguishHex(hex1, hex2, mindiff = 50) {
   const adjustedRgb1 = hslToRgb(hsl1[0], hsl1[1], l1);
   const adjustedRgb2 = hslToRgb(hsl2[0], hsl2[1], l2);
 
-  return [rgb2hex(...adjustedRgb1), rgb2hex(...adjustedRgb2)];
+  return `Original colors: [ ${hex1} ] [${hex1}] Adjusted colors: [ ${hex1} ] [${adjustedRgb2}]`;
 }
