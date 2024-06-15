@@ -3,9 +3,10 @@
 import commandLine from "./utils/cli/commandLine.js";
 import distinguishHex from "./utils/module/getDarker.js";
 import adjustRGB from "./utils/module/adjustRGB.js";
+import adjustHSL from "./utils/module/adjustHSL.js";
 
 import { fileURLToPath } from "url";
-import { dirname, join } from "path";
+import { dirname } from "path";
 import { createRequire } from "module";
 
 const currentDir = dirname(fileURLToPath(import.meta.url));
@@ -19,4 +20,5 @@ if (currentDir === dirname(entryScript)) {
 export default {
   distinguishHex,
   adjustRGB,
+  adjustHSL,
 };

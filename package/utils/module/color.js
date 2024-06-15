@@ -45,3 +45,35 @@ export function getColorModel(color) {
 
   return name;
 }
+
+export function parseHSL(hslString) {
+  const hslRegex =
+    /hsla?\(\s*([\d.]+)(deg|rad|turn)?\s*,\s*([\d.]+)%\s*,\s*([\d.]+)%\s*(?:,\s*([\d.]+)\s*)?\)/i;
+
+  const match = hslString.match(hslRegex);
+
+  if (!match) {
+    throw new Error("Invalid HSL(A) string");
+  }
+
+  let [, hue, unit, saturation, lightness, alpha] = match;
+
+  switch (unit) {
+    case "rad":
+      hue = (parseFloat(hue) * (180 / Math.PI)).toFixed(2); // Convert radians to degrees
+      break;
+    case "turn":
+      hue = (parseFloat(hue) * 360).toFixed(2); // Convert turns to degrees
+      break;
+    case "deg":
+    default:
+      hue = parseFloat(hue);
+  }
+
+  return {
+    hue: parseFloat(hue),
+    saturation: parseFloat(saturation),
+    lightness: parseFloat(lightness),
+    alpha: alpha !== undefined ? parseFloat(alpha) : 1, // Default to 1 if alpha is not specified
+  };
+}
