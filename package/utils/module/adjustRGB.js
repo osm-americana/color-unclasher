@@ -1,8 +1,11 @@
 import colorBlind from "color-blind";
 import chroma from "chroma-js";
-import { returnColorInTargetFormat, getColorModel } from "./color.js";
+import { convertToTargetFormat } from "./color.js";
+import tinycolor from "tinycolor2";
 
 /* 
+Best for rgb and hex, but also supports hsl
+
 Example usage:
 const color1 = "#a4a95b";
 const color2 = "#ff8375";
@@ -23,7 +26,6 @@ Result:
 export default function adjustRGB(color1, color2, mode, threshHold = 7) {
   const color1Blind = convertToMode(color1, mode);
   const color2Blind = convertToMode(color2, mode);
-  const color2Format = getColorModel(color2);
 
   if (chroma.deltaE(color1Blind, color2Blind) >= threshHold) {
     return `Enough contrast: [${color1}] [${color2}]`;
@@ -38,16 +40,23 @@ export default function adjustRGB(color1, color2, mode, threshHold = 7) {
     for (let increment of increments) {
       const adjustedColor = adjustColorComponent(
         color2,
-        color2Format,
         color1Blind,
         component,
         increment,
         mode,
         threshHold
       );
+
+      const adjustedColorInOriginalFormat =
+        adjustedColor === "----"
+          ? "----"
+          : convertToTargetFormat(
+              { r: adjustedColor[0], g: adjustedColor[1], b: adjustedColor[2] },
+              color2
+            );
       adjustedColors[
         `${component}_${increment > 0 ? "increase" : "decrease"}`
-      ] = adjustedColor;
+      ] = adjustedColorInOriginalFormat;
     }
   }
 
@@ -56,7 +65,6 @@ export default function adjustRGB(color1, color2, mode, threshHold = 7) {
 
 function adjustColorComponent(
   color2,
-  color2Format,
   color1Blind,
   component,
   increment,
@@ -67,15 +75,21 @@ function adjustColorComponent(
   const index = { red: 0, green: 1, blue: 2 }[component];
 
   while (true) {
-    adjustedColor[index] = Math.max(
-      0,
-      Math.min(255, adjustedColor[index] + increment)
+    adjustedColor[index] = adjustedColor[index] + increment;
+
+    const adjustedColorBlind = convertToMode(
+      tinycolor({
+        r: adjustedColor[0],
+        g: adjustedColor[1],
+        b: adjustedColor[2],
+      }).toHexString(),
+      mode
     );
-    const adjustedColorBlind = convertToMode(chroma(adjustedColor).hex(), mode);
+
     const deltaE = chroma.deltaE(color1Blind, adjustedColorBlind);
 
     if (deltaE > threshHold) {
-      return returnColorInTargetFormat(adjustedColor, color2Format);
+      return adjustedColor;
     }
 
     if (

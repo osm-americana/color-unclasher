@@ -1,21 +1,24 @@
-import chroma from "chroma-js";
 import Color from "color";
 import tinycolor from "tinycolor2";
 
 // TODO: need testing
-export function returnColorInTargetFormat(color, format) {
+export function convertToTargetFormat(adjustedColor, color2) {
+  var color = tinycolor(adjustedColor);
+  const format = getColorModel(color2);
 
   switch (format) {
     case "hex":
-      return chroma(color).hex();
+      return color.toHexString();
     case "rgb":
-      return Color.rgb(color).string();
+      return color.toRgbString();
+    case "rgba":
+      return color.setAlpha(tinycolor(color2).getAlpha()).toRgbString();
     case "hsl":
-      return Color.rgb(color).hsl().string();
+      return color.toHslString();
     case "hsla":
-      return Color.rgb(color).hsla().string();
-    case "hsv":
-      return Color.rgb(color).hsv(color).string();
+      return color.setAlpha(tinycolor(color2).getAlpha()).toHslString();
+    // case "hsv":
+    //   return Color.rgb(color).hsv(color).string();
     // case "gl":
     //   return chroma(color).gl();
     // case "lab":
