@@ -1,4 +1,7 @@
-import { interpolates, Color } from "@maplibre/maplibre-gl-style-spec";
+import {
+  Interpolate, interpolates,
+  Color,
+} from "@maplibre/maplibre-gl-style-spec";
 import chroma from "chroma-js";
 
 /*
@@ -86,18 +89,20 @@ function getLayerColorsAtZooms(
 ) {
   let fillColors;
   const colorsAtZooms = {};
-  let interpolateType;
+  const interpolationType = {};
 
   if (
     Array.isArray(fillColor) &&
-    fillColor[0].includes("interpolate") &&
-    fillColor[1][0] === "linear" &&
-    fillColor[2][0] === "zoom"
+    fillColor[0].includes("interpolate")
   ) {
-    interpolateType = fillColor[0];
+    const type = fillColor[1];
+    type.map((p, index) => {
+      const key = index == 0 ? "name" : (typeof p === 'number' ? 'base' : 'controlPoints' );
+      interpolationType[key] = p;
+    })
     fillColors = fillColor.slice(3);
   } else if (fillColor["stops"]) {
-    interpolateType = 'stops';
+    interpolationType['stops'] = "stops";
     fillColors = fillColor["stops"].flat();
   // Complicated case
   } else if (fillColor[0] === 'case') {
@@ -116,8 +121,6 @@ function getLayerColorsAtZooms(
       result[index] = [[id, condition.toString()], zoomLevelColors];
     })
 
-    // console.log(result);
-
     // return null;
     return result;
   } else {
@@ -129,7 +132,7 @@ function getLayerColorsAtZooms(
     colorsAtZooms[i] = getInterpolatedColorAtZoom(
       fillColors,
       i,
-      interpolateType
+      interpolationType
     );
   }
 
@@ -139,8 +142,23 @@ function getLayerColorsAtZooms(
 /*
 Input:
 [ 5, '#ff0000', 10, '#00ff00', 15, '#0000ff' ]
+
+interpolationType:
+{
+    name: 'linear';
+} | {
+    name: 'exponential';
+    base: number;
+} | {
+    name: 'cubic-bezier';
+    controlPoints: [number, number, number, number];
+};
 */
-function getInterpolatedColorAtZoom(flatPoints, value, interpolateType) {
+function getInterpolatedColorAtZoom(
+  flatPoints,
+  value,
+  interpolationType
+) {
   let points = [];
   for (let i = 0; i < flatPoints.length; i += 2) {
     points.push([flatPoints[i], flatPoints[i + 1]]);
@@ -157,25 +175,35 @@ function getInterpolatedColorAtZoom(flatPoints, value, interpolateType) {
       }
 
       if (value < points[i][0]) {
-        let x0 = points[i - 1][0];
+        let lowerValue = points[i - 1][0];
         let color1 = points[i - 1][1];
-        let x1 = points[i][0];
+        let higherValue = points[i][0];
         let color2 = points[i][1];
-        const t = (value - x0) / (x1 - x0);
+
+        const t = Interpolate.interpolationFactor(
+          interpolationType,
+          value,
+          lowerValue,
+          higherValue
+        );
 
         let color;
-        if (interpolateType === "interpolate" || interpolateType === 'stops') {
+        if (
+          interpolationType["stops"] ||
+          interpolationType["name"] === "interpolate"
+        ) {
           color = interpolates.color(
             Color.parse(color1),
             Color.parse(color2),
             t
           );
+          // example: interpolate-hsl
         } else {
           color = interpolates.color(
             Color.parse(color1),
             Color.parse(color2),
             t,
-            interpolateType.split("-")[1]
+            interpolationType['name'].split("-")[1]
           );
         }
 

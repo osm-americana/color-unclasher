@@ -22,6 +22,35 @@
       }
     },
     {
+      "id": "ocean",
+      "type": "fill",
+      "source-layer": "water",
+      "paint": {
+        "fill-color": {
+          "stops": [
+            [7, "rgba(133,192,249,0.5)"],
+            [8, "rgba(15,32,128,1)"]
+          ]
+        }
+      }
+    },
+    {
+      "id": "grass",
+      "type": "fill",
+      "source-layer": "vegetation",
+      "paint": {
+        "fill-color": [
+          "interpolate",
+          ["exponential", 1.2],
+          ["zoom"],
+          5,
+          "hsl(0, 0%, 75%)",
+          15,
+          "hsl(0, 0%, 23%)"
+        ]
+      }
+    },
+    {
       "id": "water",
       "type": "fill",
       "paint": {

@@ -5,15 +5,10 @@ import fs from "fs";
 import path from "path";
 
 export default function commandLine(process) {
-  const [mode, filePath, outputPath] = process.argv.slice(2);
+  const [filePath, outputPath] = process.argv.slice(2);
 
   if (!filePath) {
     console.error("Please provide a path to the JSON file");
-    process.exit(1);
-  }
-
-  if (mode !== "analysis") {
-    console.error("Please provide a correct mode name");
     process.exit(1);
   }
 
