@@ -99,6 +99,7 @@ function getLayerColorsAtZooms(
   } else if (fillColor["stops"]) {
     interpolateType = 'stops';
     fillColors = fillColor["stops"].flat();
+  // Complicated case
   } else if (fillColor[0] === 'case') {
     const conditionList = fillColor[1].slice(1);
     // console.log("conditionList", conditionList, conditionList.length);
