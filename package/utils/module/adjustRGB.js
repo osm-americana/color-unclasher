@@ -87,7 +87,6 @@ function adjustColorComponent(
     );
 
     const deltaE = chroma.deltaE(color1Blind, adjustedColorBlind);
-    console.log(adjustedColor);
 
     if (deltaE > threshHold) {
       return adjustedColor;

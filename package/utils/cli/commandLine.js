@@ -12,8 +12,29 @@ export default function commandLine(process) {
     process.exit(1);
   }
 
-  const zoomLevelColorsArray = [];
-  const masterArray = [];
+  /*
+  resultArray structure:
+  [
+    [
+      fillZoomLevelColorsArray, lineZoomLevelColorsArray
+    ],
+    [
+      fillColorsInEachZoomLevel, lineColorsInEachZoomLevel
+    ],
+    [
+      fillColorToLayerIDByZoomLevel, lineColorToLayerIDByZoomLevel
+    ],
+    [
+      fillUniqueColors, lineUniqueColors
+    ],
+    [
+      fillNonCompliantPairsByType, lineNonCompliantPairsByType
+    ],
+  ]
+  */
+  const resultArray = [[], [], [], [], []];
+  const layerTypes = ["fill", "line"];
+
   const colorBlindTypes = [
     "normal",
     "deuteranopia",
@@ -23,96 +44,63 @@ export default function commandLine(process) {
 
   extractStyle(filePath)
     .then((data) => {
-      [0, 1].map((index) =>{
-        knowKnowWhatToName(
-          data[index],
-          index === 0 ? zoomLevelColorsArray : masterArray
+      layerTypes.map((t, index) => {
+        resultArray[0].push(getZoomLevelColorsArray(data[index], resultArray));
+        resultArray[1].push(
+          extractColorsInEachZoomLevel(resultArray[0][index])
         );
-      })
+        resultArray[2].push(
+          extractColorToLayerIDByZoomLevel(resultArray[1][index])
+        );
+        resultArray[3].push(getUniqueColors(resultArray[1][index]));
+        resultArray[4].push(
+          checkContrastBetweenPairs(colorBlindTypes, resultArray[3][index])
+        );
+      });
 
-      const colorsInEachZoomLevel =
-        extractColorsInEachZoomLevel(zoomLevelColorsArray);
-      const colorToLayerIDByZoomLevel = extractColorToLayerIDByZoomLevel(colorsInEachZoomLevel);
-      const uniqueColors = getUniqueColors(colorsInEachZoomLevel);
-
-      const colorsInEachZoomLevel2 = extractColorsInEachZoomLevel(masterArray);
-      const colorToLayerIDByZoomLevel2 = extractColorToLayerIDByZoomLevel(
-        colorsInEachZoomLevel2
-      );
-      const uniqueColors2 = getUniqueColors(colorsInEachZoomLevel2);
-
-      const nonCompliantPairsByType = checkContrastBetweenPairs(
-        colorBlindTypes,
-        uniqueColors
-      );
-
-      const nonCompliantPairsByType2 = checkContrastBetweenPairs(
-        colorBlindTypes,
-        uniqueColors2
-      );
-
-      outPutAnalysis(
-        colorBlindTypes,
-        nonCompliantPairsByType,
-        colorToLayerIDByZoomLevel,
-        outputPath,
-        nonCompliantPairsByType2,
-        colorToLayerIDByZoomLevel2
-      );
-
-      // outPutAnalysis(
-      //   nonCompliantPairsByType2,
-      //   colorToLayerIDByZoomLevel2,
-      //   outputPath
-      // );
+      outPutAnalysis(resultArray, colorBlindTypes, outputPath);
     })
     .catch((error) => {
       console.error("Error reading file:", error);
     });
 }
 
-function knowKnowWhatToName(data, zoomLevelColorsArray) {
+function getZoomLevelColorsArray(data, resultArray) {
+  const result = [];
+
   Object.keys(data).forEach((key) => {
     data[key].forEach((item) => {
       const zoomLevelColors = layerPaintToZoomLevelColors(item, 2, 22);
       if (!Array.isArray(zoomLevelColors)) {
         Object.keys(zoomLevelColors).forEach((key) => {
-          zoomLevelColorsArray.push(zoomLevelColors[key]);
+          result.push(zoomLevelColors[key]);
         });
       } else if (zoomLevelColors) {
-        zoomLevelColorsArray.push(zoomLevelColors);
+        result.push(zoomLevelColors);
       }
     });
   });
+
+  return result;
 }
 
-function outPutAnalysis(
-  colorBlindTypes,
-  nonCompliantPairsByType,
-  colorToLayerIDByZoomLevel,
-  outputPath,
-  nonCompliantPairsByType2,
-  colorToLayerIDByZoomLevel2
-) {
+function outPutAnalysis(resultArray, colorBlindTypes, outputPath) {
   const outputMessagesToFileByType = [];
 
   colorBlindTypes.map((type, index) => {
     if (outputPath) {
       outputMessagesToFileByType.push(
-        outputNoneCompliantPairs(pairsArray, colorToLayerIDByZoomLevel).join("")
+        outputNoneCompliantPairs(
+          resultArray[4][0][index][1],
+          resultArray[2][0]
+        ).join("")
       );
     } else {
-      console.log("------", type , "------");
+      console.log("------", type, "------");
       console.log("\n     type=fill\n");
-      writeResultToTerminal(
-        nonCompliantPairsByType[index][1],
-        colorToLayerIDByZoomLevel
-      );
+      writeResultToTerminal(resultArray[4][0][index][1], resultArray[2][0]);
       console.log("\n     type=line\n");
-      writeResultToTerminal(
-        nonCompliantPairsByType2[index][1],
-        colorToLayerIDByZoomLevel2
-      );
+      writeResultToTerminal(resultArray[4][1][index][1], resultArray[2][1]);
       console.log("\n");
     }
   });
@@ -132,20 +120,20 @@ function writeResultToTerminal(nonCompliantPairs, colorToLayerIDByZoomLevel) {
       const name1 = colorToLayerIDByZoomLevel[key][color1];
       const name2 = colorToLayerIDByZoomLevel[key][color2];
 
-      // For paint expressions that contains case
-      // For example, for layerID "water"
-      // "fill-color": [
-      //   "case",
-      //   [
-      //     "any",
-      //     ["==", ["get", "intermittent"], 1],
-      //     ["==", ["get", "brunnel"], "tunnel"]
-      //   ],
-      //   "hsl(211, 60%, 85%)",
-      //   "hsl(211, 50%, 85%)"
-      // ]
-      // would result in two colors depending on the cases
-      // so we don't want to mark this pair as need more contrast
+      /* For paint expressions that contains case
+         For example, for layerID "water"
+         "fill-color": [
+           "case",
+           [
+             "any",
+             ["==", ["get", "intermittent"], 1],
+             ["==", ["get", "brunnel"], "tunnel"]
+           ],
+           "hsl(211, 60%, 85%)",
+           "hsl(211, 50%, 85%)"
+         ]
+         would result in two colors depending on the cases
+         so we don't want to mark this pair as need more contrast */
       if (Array.isArray(name1) && Array.isArray(name2)) {
         if (name1[0][0] === name2[0][0]) {
           return null;
@@ -175,7 +163,10 @@ function writeResultToFile(outputMessages, outputPath) {
   });
 }
 
-function outputNoneCompliantPairs(nonCompliantPairs, colorToLayerIDByZoomLevel) {
+function outputNoneCompliantPairs(
+  nonCompliantPairs,
+  colorToLayerIDByZoomLevel
+) {
   let outputMessages = [`------ ${nonCompliantPairs[0]} ------\n`];
   const pairsArray = nonCompliantPairs[1];
 
@@ -187,20 +178,20 @@ function outputNoneCompliantPairs(nonCompliantPairs, colorToLayerIDByZoomLevel) 
       const name1 = colorToLayerIDByZoomLevel[key][color1];
       const name2 = colorToLayerIDByZoomLevel[key][color2];
 
-      // For paint expressions that contains case
-      // For example, for layerID "water"
-      // "fill-color": [
-      //   "case",
-      //   [
-      //     "any",
-      //     ["==", ["get", "intermittent"], 1],
-      //     ["==", ["get", "brunnel"], "tunnel"]
-      //   ],
-      //   "hsl(211, 60%, 85%)",
-      //   "hsl(211, 50%, 85%)"
-      // ]
-      // would result in two colors depending on the cases
-      // so we don't want to mark this pair as need more contrast
+      /* For paint expressions that contains case
+         For example, for layerID "water"
+         "fill-color": [
+           "case",
+           [
+             "any",
+             ["==", ["get", "intermittent"], 1],
+             ["==", ["get", "brunnel"], "tunnel"]
+           ],
+           "hsl(211, 60%, 85%)",
+           "hsl(211, 50%, 85%)"
+         ]
+         would result in two colors depending on the cases
+         so we don't want to mark this pair as need more contrast */
       if (Array.isArray(name1) && Array.isArray(name2)) {
         if (name1[0][0] === name2[0][0]) {
           return null;
@@ -239,10 +230,10 @@ Output:
   }
 }
 */
-function extractColorsInEachZoomLevel(layers) {
+function extractColorsInEachZoomLevel(zoomLevelColorsArray) {
   const result = {};
 
-  layers.forEach(([layerName, zoomLevels]) => {
+  zoomLevelColorsArray.forEach(([layerName, zoomLevels]) => {
     Object.keys(zoomLevels).forEach((zoomLevel) => {
       if (!result[zoomLevel]) {
         result[zoomLevel] = [];

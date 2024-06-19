@@ -63,9 +63,12 @@ export default function layerPaintToZoomLevelColors(
 
     return [id, zoomLevelColors];
   } else {
-    const lol = style["fill-color"] || style["line-color"];
-    console.log("------", lol, lol === undefined);
-    return getLayerColorsAtZooms(id, lol, layerMinZoom, layerMaxZoom);
+    return getLayerColorsAtZooms(
+      id,
+      style["fill-color"] || style["line-color"],
+      layerMinZoom,
+      layerMaxZoom
+    );
   }
 }
 
