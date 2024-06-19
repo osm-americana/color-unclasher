@@ -1,22 +1,13 @@
 import inquirer from "inquirer";
 
-export default async function getOptions(filePath) {
+export default async function getOptions() {
   const defaultOptions = {
-    outputPath: '',
     targetDeltaE: 5.5,
     minMaxZoom: [0, 22],
     ignorePairs: [],
   };
 
   const questions = [
-    {
-      type: "input",
-      name: "outputPath",
-      message:
-        "Enter the output file location. Keep blank for write to terminal:",
-      default: defaultOptions.outputPath,
-      filter: (input) => (input === "" ? null : input),
-    },
     {
       type: "number",
       name: "targetDeltaE",
@@ -48,7 +39,6 @@ export default async function getOptions(filePath) {
       inquirer.prompt(questions)
       .then((answers) => {
         resolve({
-          filePath,
           ...defaultOptions,
           ...answers,
         });

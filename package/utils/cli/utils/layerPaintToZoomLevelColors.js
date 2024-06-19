@@ -55,10 +55,11 @@ export default function layerPaintToZoomLevelColors(
   //   : style["background-color"];
 
   // Simple fill color value like "#fff"
-  if (typeof style["fill-color"] === "string") {
+  if (typeof style["fill-color"] === "string" || typeof style["line-color"] === "string") {
     const zoomLevelColors = {};
+    const color = style["fill-color"] || style["line-color"];
     for (let i = layerMinZoom; i < layerMaxZoom + 1; i++) {
-      zoomLevelColors[i] = style["fill-color"];
+      zoomLevelColors[i] = color;
     }
 
     return [id, zoomLevelColors];

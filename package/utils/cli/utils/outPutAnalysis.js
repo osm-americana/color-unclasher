@@ -15,10 +15,13 @@ export default function outPutAnalysis(
       outputMessagesToFileByType.push(
         outputNoneCompliantPairs(
           resultArray[4][0][index][1],
-          resultArray[2][0]
+          resultArray[2][0],
+          resultArray[4][1][index][1],
+          resultArray[2][1],
+          type
         ).join("")
       );
-      // output to terminal
+    // output to terminal
     } else {
       console.log("------", type, "------");
       console.log("\n     type=fill\n");
@@ -80,12 +83,37 @@ function writeResultToFile(outputMessages, outputPath) {
 }
 
 function outputNoneCompliantPairs(
-  nonCompliantPairs,
-  colorToLayerIDByZoomLevel
+  fillNonCompliantPairs,
+  fillColorToLayerIDByZoomLevel,
+  lineNonCompliantPairs,
+  lineColorToLayerIDByZoomLevel,
+  type
 ) {
-  let outputMessages = [`------ ${nonCompliantPairs[0]} ------\n`];
-  const pairsArray = nonCompliantPairs[1];
+  let outputMessages = [`------ ${type} ------\n`, "\n     type=fill\n"];
 
+  pushPairsInformation(
+    fillNonCompliantPairs,
+    fillColorToLayerIDByZoomLevel,
+    outputMessages
+  );
+  outputMessages.push("\n     type=line\n");
+  outputMessages.push("\n");
+
+  pushPairsInformation(
+    lineNonCompliantPairs,
+    lineColorToLayerIDByZoomLevel,
+    outputMessages
+  );
+  outputMessages.push("\n");
+
+  return outputMessages;
+}
+
+function pushPairsInformation(
+  pairsArray,
+  colorToLayerIDByZoomLevel,
+  outputMessages
+) {
   Object.keys(pairsArray).forEach((key) => {
     const pairs = pairsArray[key];
     pairs.map((p) => {
@@ -119,8 +147,4 @@ function outputNoneCompliantPairs(
       );
     });
   });
-
-  outputMessages.push("\n");
-
-  return outputMessages;
 }

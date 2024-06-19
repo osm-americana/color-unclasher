@@ -3,8 +3,8 @@ import extractStyle from "./utils/extractStyle.js";
 import processStyles from "./utils/processStyles.js";
 import outPutAnalysis from "./utils/outPutAnalysis.js";
 
-export default async function commandLine(filePath) {
-  const options = await getOptions(filePath);
+export default async function commandLine(filePath, outPutPath) {
+  const options = await getOptions();
   const layerTypes = ["fill", "line"];
 
   const colorBlindTypes = [
@@ -14,7 +14,7 @@ export default async function commandLine(filePath) {
     "tritanopia",
   ];
 
-  extractStyle(options.filePath)
+  extractStyle(filePath)
     .then((data) => {
       const resultArray = processStyles(
         layerTypes,
@@ -23,7 +23,7 @@ export default async function commandLine(filePath) {
         options.minMaxZoom,
         options.targetDeltaE
       );
-      outPutAnalysis(resultArray, colorBlindTypes, options.outputPath);
+      outPutAnalysis(resultArray, colorBlindTypes, outPutPath);
     })
     .catch((error) => {
       console.error("Error reading file:", error);
