@@ -17,6 +17,7 @@ Then answer the questions:
 
 ? Enter the minimum and maximum zoom level (comma-separated): 0,22
 
+--------
 
 Get adjusted colors via module
 
