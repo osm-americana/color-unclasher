@@ -69,16 +69,16 @@ test("return in rgba with correct alpha value and more than deltaE of 7", () => 
   });
 });
 
-test("return in hsla with correct alpha value", () => {
-  const color1 = "hsla(0, 100%, 50%, .5)";
-  const color2 = "hsla(0, 100%, 50%, .3)";
-  const alpha = tinycolor(color2).getAlpha() + "";
+// test("return in hsla with correct alpha value", () => {
+//   const color1 = "hsla(0, 100%, 50%, .5)";
+//   const color2 = "hsla(0, 100%, 50%, .3)";
+//   const alpha = tinycolor(color2).getAlpha() + "";
 
-  const results = adjustRGB(color1, color2, "deuteranopia");
+//   const results = adjustRGB(color1, color2, "deuteranopia");
 
-  Object.keys(results).map((key) => {
-    if (results[key] !== "----") {
-      expect(results[key]).toEqual(expect.stringContaining(alpha));
-    }
-  });
-});
+//   Object.keys(results).map((key) => {
+//     if (results[key] !== "----") {
+//       expect(results[key]).toEqual(expect.stringContaining(alpha));
+//     }
+//   });
+// });

@@ -73,13 +73,13 @@ function adjustColorComponent(
 
     if (
       component == "hue" &&
-      ((increment > 0 && adjustedColor["hue"] === 360) ||
-        (increment < 0 && adjustedColor["hue"] === 0))
+      ((increment > 0 && adjustedColor["hue"] >= 360) ||
+        (increment < 0 && adjustedColor["hue"] <= 0))
     ) {
       return "----";
     } else if (
-      (increment > 0 && adjustedColor[component] === 100) ||
-      (increment < 0 && adjustedColor[component] === 0)
+      (increment > 0 && adjustedColor[component] >= 100) ||
+      (increment < 0 && adjustedColor[component] <= 0)
     ) {
       return "----";
     }

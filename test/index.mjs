@@ -1,29 +1,40 @@
-import colorUnClasher from "color-unclasher";
+import {
+  createFunction,
+} from "@maplibre/maplibre-gl-style-spec";
 
-// console.log(
-//   colorUnClasher.adjustRGB(
-//     "hsl(30, 44%, 96%)",
-//     "hsl(250, 41%, 95%)",
-//     "tritanopia"
-//   )
-// );
+// const lol = new Interpolate(outputType, (operator as any), interpolation as InterpolationType, input as Expression, stops);
+          5, "#ff0000", 10, "#00ff00", 15, "#0000ff";
 
-// console.log(colorUnClasher.adjustRGB("#F9F5F0", "#F2F0F9", "tritanopia"));
 
-// console.log(colorUnClasher.adjustRGB("#a4a95b", "#ff8375", "deuteranopia"));
+        const f = createFunction(
+          {
+            type: "exponential",
+            stops: [
+              [5, "#ff0000"],
+              [10, "#00ff00"],
+              [15, "#0000ff"],
+            ],
+          },
+          {
+            type: "color",
+          }
+        ).evaluate;
 
-// console.log(
-//   colorUnClasher.adjustRGB(
-//     "rgb(255, 131, 116)",
-//     "rgb(164, 169, 91)",
-//     "deuteranopia"
-//   )
-// );
+        console.log(f({ zoom: 0 }));
+        console.log(f({ zoom: 14 }));
 
-const   lol = colorUnClasher.adjustRGB(
-    "rgba(255, 131, 116, 0.5)",
-    "rgba(164, 169, 91, 0.8)",
-    "deuteranopia"
-  );
+                const l = createFunction(
+                  {
+                    type: "linear",
+                    stops: [
+                      [5, "#ff0000"],
+                      [10, "#00ff00"],
+                      [15, "#0000ff"],
+                    ],
+                  },
+                  {
+                    type: "color",
+                  }
+                ).evaluate;
 
-Object.keys(lol).forEach((key) => console.log(lol[key].includes('0.8')))
+        // expectToMatchColor(f({ zoom: 0 }, undefined), "rgb(100% 0% 0% / 1)");

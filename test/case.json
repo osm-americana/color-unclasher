@@ -14,9 +14,63 @@
       "layout": { "visibility": "visible" }
     },
     {
+      "id": "airport",
+      "type": "fill",
+      "source-layer": "aeroway",
+      "paint": {
+        "fill-color": "hsl(0, 0%, 75%)"
+      }
+    },
+    {
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "transportation",
+      "id": "line2",
+      "minzoom": 11,
+      "paint": {
+        "line-color": [
+          "interpolate",
+          ["exponential", 1.2],
+          ["zoom"],
+          11,
+          "#FFDD00",
+          14,
+          "hsl(211, 50%, 85%)"
+        ],
+        "line-blur": 0.5
+      }
+    },
+    {
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "transportation",
+      "id": "road_casing_surface_all_,get,class,tertiary_!,coalesce,get,ramp,0,1_,coalesce,get,expressway,0,1",
+      "minzoom": 11,
+      "paint": {
+        "line-color": [
+          "interpolate",
+          ["exponential", 1.2],
+          ["zoom"],
+          11,
+          "#FFDDDD",
+          18,
+          "hsl(211, 50%, 85%)"
+        ],
+        "line-blur": 0.5
+      }
+    },
+    {
+      "id": "airline",
+      "type": "fill",
+      "source-layer": "aeroway",
+      "paint": {
+        "fill-color": "#FFDD00"
+      }
+    },
+    {
       "id": "landuse_hospital",
       "type": "fill",
-      "source-layer": "water",
+      "source-layer": "landuse",
       "paint": {
         "fill-color": "#FFDDDD"
       }

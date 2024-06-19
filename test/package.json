@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@maplibre/maplibre-gl-style-spec": "^20.3.0",
     "color": "^4.2.3"
   }
 }

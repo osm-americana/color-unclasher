@@ -13,6 +13,7 @@ export default function commandLine(process) {
   }
 
   const zoomLevelColorsArray = [];
+  const masterArray = [];
   const colorBlindTypes = [
     "normal",
     "deuteranopia",
@@ -22,55 +23,97 @@ export default function commandLine(process) {
 
   extractStyle(filePath)
     .then((data) => {
-      Object.keys(data).forEach((key) => {
-        data[key].forEach((item) => {
-          const zoomLevelColors = layerPaintToZoomLevelColors(item, 2, 22);
-          if (!Array.isArray(zoomLevelColors)) {
-            Object.keys(zoomLevelColors).forEach((key) => {
-              zoomLevelColorsArray.push(zoomLevelColors[key]);
-            });
-          } else if (zoomLevelColors) {
-            zoomLevelColorsArray.push(zoomLevelColors);
-          }
-        });
-      });
+      [0, 1].map((index) =>{
+        knowKnowWhatToName(
+          data[index],
+          index === 0 ? zoomLevelColorsArray : masterArray
+        );
+      })
 
       const colorsInEachZoomLevel =
         extractColorsInEachZoomLevel(zoomLevelColorsArray);
-      const zoomLevelColorMap = extractZoomLevelColorMap(colorsInEachZoomLevel);
+      const colorToLayerIDByZoomLevel = extractColorToLayerIDByZoomLevel(colorsInEachZoomLevel);
       const uniqueColors = getUniqueColors(colorsInEachZoomLevel);
+
+      const colorsInEachZoomLevel2 = extractColorsInEachZoomLevel(masterArray);
+      const colorToLayerIDByZoomLevel2 = extractColorToLayerIDByZoomLevel(
+        colorsInEachZoomLevel2
+      );
+      const uniqueColors2 = getUniqueColors(colorsInEachZoomLevel2);
+
       const nonCompliantPairsByType = checkContrastBetweenPairs(
         colorBlindTypes,
         uniqueColors
       );
 
-      outPutAnalysis(nonCompliantPairsByType, zoomLevelColorMap, outputPath);
+      const nonCompliantPairsByType2 = checkContrastBetweenPairs(
+        colorBlindTypes,
+        uniqueColors2
+      );
+
+      outPutAnalysis(
+        colorBlindTypes,
+        nonCompliantPairsByType,
+        colorToLayerIDByZoomLevel,
+        outputPath,
+        nonCompliantPairsByType2,
+        colorToLayerIDByZoomLevel2
+      );
+
+      // outPutAnalysis(
+      //   nonCompliantPairsByType2,
+      //   colorToLayerIDByZoomLevel2,
+      //   outputPath
+      // );
     })
     .catch((error) => {
       console.error("Error reading file:", error);
     });
 }
 
+function knowKnowWhatToName(data, zoomLevelColorsArray) {
+  Object.keys(data).forEach((key) => {
+    data[key].forEach((item) => {
+      const zoomLevelColors = layerPaintToZoomLevelColors(item, 2, 22);
+      if (!Array.isArray(zoomLevelColors)) {
+        Object.keys(zoomLevelColors).forEach((key) => {
+          zoomLevelColorsArray.push(zoomLevelColors[key]);
+        });
+      } else if (zoomLevelColors) {
+        zoomLevelColorsArray.push(zoomLevelColors);
+      }
+    });
+  });
+}
+
 function outPutAnalysis(
+  colorBlindTypes,
   nonCompliantPairsByType,
-  zoomLevelColorMap,
-  outputPath
+  colorToLayerIDByZoomLevel,
+  outputPath,
+  nonCompliantPairsByType2,
+  colorToLayerIDByZoomLevel2
 ) {
   const outputMessagesToFileByType = [];
 
-  nonCompliantPairsByType.map((pairsArray) => {
-    if (Object.keys(pairsArray[1]).length === 0) {
-      console.log("***", [pairsArray[0]], "mode: everything_looks good! ***");
+  colorBlindTypes.map((type, index) => {
+    if (outputPath) {
+      outputMessagesToFileByType.push(
+        outputNoneCompliantPairs(pairsArray, colorToLayerIDByZoomLevel).join("")
+      );
     } else {
-      if (outputPath) {
-        outputMessagesToFileByType.push(
-          outputNoneCompliantPairs(pairsArray, zoomLevelColorMap).join("")
-        );
-      } else {
-        console.log("------", pairsArray[0], "------");
-        writeResultToTerminal(pairsArray[1], zoomLevelColorMap);
-        console.log("\n");
-      }
+      console.log("------", type , "------");
+      console.log("\n     type=fill\n");
+      writeResultToTerminal(
+        nonCompliantPairsByType[index][1],
+        colorToLayerIDByZoomLevel
+      );
+      console.log("\n     type=line\n");
+      writeResultToTerminal(
+        nonCompliantPairsByType2[index][1],
+        colorToLayerIDByZoomLevel2
+      );
+      console.log("\n");
     }
   });
 
@@ -79,15 +122,15 @@ function outPutAnalysis(
   }
 }
 
-function writeResultToTerminal(nonCompliantPairs, zoomLevelColorMap) {
+function writeResultToTerminal(nonCompliantPairs, colorToLayerIDByZoomLevel) {
   Object.keys(nonCompliantPairs).forEach((key) => {
     const pairs = nonCompliantPairs[key];
 
     pairs.map((p) => {
       const color1 = p[0];
       const color2 = p[1];
-      const name1 = zoomLevelColorMap[key][color1];
-      const name2 = zoomLevelColorMap[key][color2];
+      const name1 = colorToLayerIDByZoomLevel[key][color1];
+      const name2 = colorToLayerIDByZoomLevel[key][color2];
 
       // For paint expressions that contains case
       // For example, for layerID "water"
@@ -132,7 +175,7 @@ function writeResultToFile(outputMessages, outputPath) {
   });
 }
 
-function outputNoneCompliantPairs(nonCompliantPairs, zoomLevelColorMap) {
+function outputNoneCompliantPairs(nonCompliantPairs, colorToLayerIDByZoomLevel) {
   let outputMessages = [`------ ${nonCompliantPairs[0]} ------\n`];
   const pairsArray = nonCompliantPairs[1];
 
@@ -141,8 +184,8 @@ function outputNoneCompliantPairs(nonCompliantPairs, zoomLevelColorMap) {
     pairs.map((p) => {
       const color1 = p[0];
       const color2 = p[1];
-      const name1 = zoomLevelColorMap[key][color1];
-      const name2 = zoomLevelColorMap[key][color2];
+      const name1 = colorToLayerIDByZoomLevel[key][color1];
+      const name2 = colorToLayerIDByZoomLevel[key][color2];
 
       // For paint expressions that contains case
       // For example, for layerID "water"
@@ -228,7 +271,7 @@ Output:
   }
 }
 */
-function extractZoomLevelColorMap(input) {
+function extractColorToLayerIDByZoomLevel(input) {
   const result = {};
 
   for (const [zoom, layers] of Object.entries(input)) {

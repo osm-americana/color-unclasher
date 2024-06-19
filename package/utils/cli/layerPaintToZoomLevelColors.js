@@ -63,12 +63,9 @@ export default function layerPaintToZoomLevelColors(
 
     return [id, zoomLevelColors];
   } else {
-    return getLayerColorsAtZooms(
-      id,
-      style["fill-color"],
-      layerMinZoom,
-      layerMaxZoom
-    );
+    const lol = style["fill-color"] || style["line-color"];
+    console.log("------", lol, lol === undefined);
+    return getLayerColorsAtZooms(id, lol, layerMinZoom, layerMaxZoom);
   }
 }
 
@@ -91,6 +88,7 @@ function getLayerColorsAtZooms(
   const colorsAtZooms = {};
   const interpolationType = {};
 
+  // Interpolate
   if (
     Array.isArray(fillColor) &&
     fillColor[0].includes("interpolate")
@@ -101,10 +99,11 @@ function getLayerColorsAtZooms(
       interpolationType[key] = p;
     })
     fillColors = fillColor.slice(3);
+  // regular stops
   } else if (fillColor["stops"]) {
     interpolationType['stops'] = "stops";
     fillColors = fillColor["stops"].flat();
-  // Complicated case
+  // Case
   } else if (fillColor[0] === 'case') {
     const conditionList = fillColor[1].slice(1);
     // console.log("conditionList", conditionList, conditionList.length);
