@@ -14,22 +14,12 @@
       "layout": { "visibility": "visible" }
     },
     {
-      "id": "water",
+      "id": "landuse_school",
       "type": "fill",
+      "source-layer": "landuse",
       "paint": {
-        "fill-color": [
-          "case",
-          [
-            "any",
-            ["==", ["get", "intermittent"], 1],
-            ["==", ["get", "brunnel"], "tunnel"]
-          ],
-          "hsl(211, 60%, 85%)",
-          "hsl(211, 0%, 85%)" 
-        ]
-      },
-      "source": "openmaptiles",
-      "source-layer": "water"
+        "fill-color": "#FFC7E2"
+      }
     },
     {
       "id": "landuse_errr",
@@ -58,9 +48,9 @@
       }
     },
     {
-      "id": "water_hospital",
+      "id": "landuse_hospital",
       "type": "fill",
-      "source-layer": "water",
+      "source-layer": "meh",
       "paint": {
         "fill-color": {
           "stops": [
