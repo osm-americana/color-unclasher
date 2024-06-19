@@ -1,14 +1,14 @@
 import chroma from "chroma-js";
 import colorBlind from "color-blind";
 
-export default function checkContrastBetweenPairs(colorBlindTypes, uniqueColors) {
+export default function checkContrastBetweenPairs(colorBlindTypes, uniqueColors, threshHold) {
   const nonCompliantPairsByType = [];
 
   colorBlindTypes.map((t) => {
     let nonCompliantPairs = {};
 
     for (const [zoomLevel, colors] of uniqueColors) {
-      const result = checkContrast(colors, t, 5.5);
+      const result = checkContrast(colors, t, threshHold);
       if (typeof result !== "boolean") {
         nonCompliantPairs[zoomLevel] = result;
       }
@@ -17,6 +17,24 @@ export default function checkContrastBetweenPairs(colorBlindTypes, uniqueColors)
   });
 
   return nonCompliantPairsByType;
+}
+
+function checkContrast(colors, mode, threshHold) {
+  let nonCompliantPairs = [];
+
+  for (let i = 0; i < colors.length; i++) {
+    for (let j = i + 1; j < colors.length; j++) {
+      if (!checkEnoughContrast(colors[i], colors[j], mode, threshHold)) {
+        nonCompliantPairs.push([colors[i], colors[j]]);
+      }
+    }
+  }
+
+  if (nonCompliantPairs.length === 0) {
+    return true;
+  } else {
+    return nonCompliantPairs;
+  }
 }
 
 function checkEnoughContrast(color1, color2, mode, threshHold = 5.5) {
@@ -62,23 +80,5 @@ function checkEnoughContrast(color1, color2, mode, threshHold = 5.5) {
     return pass;
   } else {
     return false;
-  }
-}
-
-function checkContrast(colors, mode, threshHold) {
-  let nonCompliantPairs = [];
-
-  for (let i = 0; i < colors.length; i++) {
-    for (let j = i + 1; j < colors.length; j++) {
-      if (!checkEnoughContrast(colors[i], colors[j], mode, threshHold)) {
-        nonCompliantPairs.push([colors[i], colors[j]]);
-      }
-    }
-  }
-
-  if (nonCompliantPairs.length === 0) {
-    return true;
-  } else {
-    return nonCompliantPairs;
   }
 }

@@ -34,7 +34,7 @@ export default function extractStyle(filename) {
       const jsonData = JSON.parse(data);
 
       jsonData.layers.forEach((layer) => {
-        const sourceLayer = layer["source-layer"] || 'background';
+        const sourceLayer = layer["source-layer"] || "background";
         if (
           layer["type"] !== "fill" &&
           layer["type"] !== "background" &&
@@ -43,19 +43,15 @@ export default function extractStyle(filename) {
           return;
         }
 
-        if (layer.type === 'fill') {
+        if (layer.type === "fill") {
           parseLayer(
             layer,
             "fill-color",
-            [
-              "fill-color",
-              "background-color",
-            ],
+            ["fill-color", "background-color"],
             fillData,
             sourceLayer
           );
-        }
-        else if (layer.type === "line") {
+        } else if (layer.type === "line") {
           parseLayer(
             layer,
             "line-color",
