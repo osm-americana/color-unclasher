@@ -10,9 +10,13 @@ Check via terminal
 color-unclasher [filePath]
 ```
 Then answer the questions:
+
 ? Enter the output file location. Keep blank for write to terminal:
+
 ? Enter the minimum DeltaE for enough difference: 5.5
+
 ? Enter the minimum and maximum zoom level (comma-separated): 0,22
+
 
 Get adjusted colors via module
 
