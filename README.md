@@ -7,11 +7,9 @@ Color-blind friendliness checker for Maplibre
 Check via terminal
 
 ```sh
-color-unclasher [filePath]
+color-unclasher [filePath] [outPutPath] // For write to terminal, don't type outPutPath
 ```
 Then answer the questions:
-
-? Enter the output file location. Keep blank for write to terminal:
 
 ? Enter the minimum DeltaE for enough difference: 5.5
 
