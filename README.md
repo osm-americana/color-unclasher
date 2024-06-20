@@ -7,7 +7,7 @@ Color-blind friendliness checker for Maplibre
 Check via terminal
 
 ```sh
-color-unclasher [filePath] [outPutPath] // For write to terminal, don't type outPutPath
+color-unclasher filePath [outPutPath] // result would be written to terminal when no outPutPath is provided
 ```
 Then answer the questions:
 
@@ -25,8 +25,6 @@ import ColorUnclasher from "color-unclasher";
 const color1 = "#a4a95b"; // wouldn't be modified
 const color2 = "#ff8375"; // be based on by adjusted colors 
 
-const newColors = ColorUnclasher.adjustRGB(color1, color2, deuteranopia);
-
 /*
   Result:
   {
@@ -38,3 +36,5 @@ const newColors = ColorUnclasher.adjustRGB(color1, color2, deuteranopia);
     blue_decrease: '#ff833a'
   }
 */
+const newColors = ColorUnclasher.adjustRGB(color1, color2, deuteranopia);
+```
