@@ -14,18 +14,13 @@ export default async function commandLine(filePath, outPutPath, exportPairs) {
     "tritanopia",
   ];
 
-  extractStyle(filePath)
-    .then((data) => {
-      const resultArray = processStyles(
-        layerTypes,
-        data,
-        colorBlindTypes,
-        options.minMaxZoom,
-        options.targetDeltaE
-      );
-      outPutAnalysis(resultArray, colorBlindTypes, outPutPath);
-    })
-    .catch((error) => {
-      console.error("Error reading file:", error);
-    });
+  const styles = await extractStyle(filePath);
+  const resultArray = processStyles(
+    layerTypes,
+    styles,
+    colorBlindTypes,
+    options.minMaxZoom,
+    options.targetDeltaE
+  );
+  outPutAnalysis(resultArray, colorBlindTypes, outPutPath);
 }

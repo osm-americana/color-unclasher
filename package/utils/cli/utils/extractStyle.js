@@ -20,8 +20,8 @@ At index 1: all layers with type=line
   }
 ]
 */
-export default function extractStyle(filename) {
-  return new Promise((resolve, reject) => {
+export default async function extractStyle(filename) {
+  const styles = new Promise((resolve, reject) => {
     const fillData = {};
     const lineData = {};
 
@@ -64,7 +64,11 @@ export default function extractStyle(filename) {
 
       resolve([fillData, lineData]);
     });
+  }).catch((error) => {
+      console.error("Error reading file:", error);
   });
+
+  return styles;
 }
 
 function parseLayer(layer, paintType, targetProperties, result, sourceLayer) {
