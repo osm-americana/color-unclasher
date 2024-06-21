@@ -94,6 +94,62 @@ test("correctly get interpolate linear colors", () => {
   ]);
 });
 
+test("correctly get interpolate linear colors with multiple steps", () => {
+  const data = {
+    test: [
+      {
+        id: "test",
+        paint: {
+          "fill-color": [
+            "interpolate",
+            ["linear"],
+            ["zoom"],
+            0,
+            "rgb(255, 255, 255)",
+            5,
+            "rgb(255, 0, 0)",
+            10,
+            "rgb(0, 255, 0)",
+            15,
+            "rgb(0, 0, 255)",
+            20,
+            "rgb(0, 0, 0)",
+          ],
+        },
+      },
+    ],
+  };
+
+  expect(getZoomLevelColorsArray(data, [0, 20])).toStrictEqual([
+    [
+      "test",
+      {
+        0: "rgb(255, 255, 255)",
+        1: "#ffcccc",
+        2: "#ff9999",
+        3: "#ff6666",
+        4: "#ff3333",
+        5: "rgb(255, 0, 0)",
+        6: "#cc3300",
+        7: "#996600",
+        8: "#669900",
+        9: "#33cc00",
+        10: "rgb(0, 255, 0)",
+        11: "#00cc33",
+        12: "#009966",
+        13: "#006699",
+        14: "#0033cc",
+        15: "rgb(0, 0, 255)",
+        16: "#0000cc",
+        17: "#000099",
+        18: "#000066",
+        19: "#000033",
+        20: "rgb(0, 0, 0)",
+      },
+    ],
+  ]);
+});
+
 test("correctly get interpolate-hcl linear colors", () => {
   const data = {
     test: [
@@ -118,17 +174,17 @@ test("correctly get interpolate-hcl linear colors", () => {
     [
       "test",
       {
-        "0": "rgb(255, 0, 0)",
-        "1": "#fc4300",
-        "2": "#f66300",
-        "3": "#ed7d00",
-        "4": "#e09400",
-        "5": "#d1a900",
-        "6": "#bebc00",
-        "7": "#a8cf00",
-        "8": "#8ce000",
-        "9": "#65f000",
-        "10": "rgb(0, 255, 0)",
+        0: "rgb(255, 0, 0)",
+        1: "#fc4300",
+        2: "#f66300",
+        3: "#ed7d00",
+        4: "#e09400",
+        5: "#d1a900",
+        6: "#bebc00",
+        7: "#a8cf00",
+        8: "#8ce000",
+        9: "#65f000",
+        10: "rgb(0, 255, 0)",
       },
     ],
   ]);
