@@ -49,7 +49,7 @@ export default function processStyles(
   return resultArray;
 }
 
-function getZoomLevelColorsArray(data, minMaxZoom) {
+export function getZoomLevelColorsArray(data, minMaxZoom) {
   const result = [];
 
   Object.keys(data).forEach((key) => {

@@ -91,6 +91,7 @@ function getLayerColorsAtZooms(
   let fillColors;
   const colorsAtZooms = {};
   const interpolationType = {};
+  let interpolationColorSpace = 'rgb';
 
   // Interpolate
   if (
@@ -98,6 +99,8 @@ function getLayerColorsAtZooms(
     fillColor[0].includes("interpolate")
   ) {
     const type = fillColor[1];
+    interpolationColorSpace = fillColor[0].split("-")[1] || 'rgb';
+
     type.map((p, index) => {
       const key = index == 0 ? "name" : (typeof p === 'number' ? 'base' : 'controlPoints' );
       interpolationType[key] = p;
@@ -105,7 +108,7 @@ function getLayerColorsAtZooms(
     fillColors = fillColor.slice(3);
   // regular stops
   } else if (fillColor["stops"]) {
-    interpolationType['stops'] = "stops";
+    interpolationType['name'] = 'linear';
     fillColors = fillColor["stops"].flat();
   // Case
   } else if (fillColor[0] === 'case') {
@@ -135,7 +138,8 @@ function getLayerColorsAtZooms(
     colorsAtZooms[i] = getInterpolatedColorAtZoom(
       fillColors,
       i,
-      interpolationType
+      interpolationType,
+      interpolationColorSpace,
     );
   }
 
@@ -160,8 +164,19 @@ interpolationType:
 function getInterpolatedColorAtZoom(
   flatPoints,
   value,
-  interpolationType
+  interpolationType,
+  interpolationColorSpace
 ) {
+
+  if ( interpolationColorSpace !== "rgb" && interpolationColorSpace !== "hcl" &&
+    interpolationColorSpace !== "lab" ) {
+    console.error(
+      "Invalid interpolation color space. Must be rgb, hcl, or lab",
+      interpolationColorSpace
+    );
+    process.exit(1);
+  }
+
   let points = [];
   for (let i = 0; i < flatPoints.length; i += 2) {
     points.push([flatPoints[i], flatPoints[i + 1]]);
@@ -190,25 +205,12 @@ function getInterpolatedColorAtZoom(
           higherValue
         );
 
-        let color;
-        if (
-          interpolationType["stops"] ||
-          interpolationType["name"] === "interpolate"
-        ) {
-          color = interpolates.color(
-            Color.parse(color1),
-            Color.parse(color2),
-            t
-          );
-          // example: interpolate-hsl
-        } else {
-          color = interpolates.color(
-            Color.parse(color1),
-            Color.parse(color2),
-            t,
-            interpolationType['name'].split("-")[1]
-          );
-        }
+        const color = interpolates.color(
+          Color.parse(color1),
+          Color.parse(color2),
+          t,
+          interpolationColorSpace
+        );
 
         const r = color.r * 255;
         const g = color.g * 255;
