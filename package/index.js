@@ -14,10 +14,12 @@ const require = createRequire(import.meta.url);
 const entryScript = require.resolve(process.argv[1]);
 
 if (currentDir === dirname(entryScript)) {
-  const [filePath, outPutPath] = process.argv.slice(2);
+  const args = require("yargs").argv;
+  const exportPairs = Boolean(args['export-pairs']);
+  const [filePath, outPutPath] = args._;
 
   if (!filePath) {
-    console.error("Please provide a path to the JSON file");
+    console.error("Please provide a path to the style specification");
     process.exit(1);
   }
 
@@ -28,7 +30,7 @@ if (currentDir === dirname(entryScript)) {
       process.exit(1);
     }
 
-    commandLine(filePath, outPutPath);
+    commandLine(filePath, outPutPath, exportPairs);
   });
 }
 

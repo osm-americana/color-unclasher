@@ -67,7 +67,15 @@ function writeResultToTerminal(nonCompliantPairs, colorToLayerIDByZoomLevel) {
         }
       }
 
-      console.log(`Zoom ${key}`, name1, [color1], "and", name2, [color2]);
+      console.log(
+        `Zoom ${key}`,
+        name1,
+        [color1],
+        "and",
+        name2,
+        [color2],
+        "are too similar"
+      );
     });
   });
 }
@@ -90,14 +98,14 @@ function outputNoneCompliantPairs(
   type
 ) {
   let outputMessages = [`------ ${type} ------\n`, "\n     type=fill\n"];
-
+  
   pushPairsInformation(
     fillNonCompliantPairs,
     fillColorToLayerIDByZoomLevel,
     outputMessages
   );
+
   outputMessages.push("\n     type=line\n");
-  outputMessages.push("\n");
 
   pushPairsInformation(
     lineNonCompliantPairs,
@@ -143,7 +151,7 @@ function pushPairsInformation(
       }
 
       outputMessages.push(
-        `Zoom ${key} [ "${name1}" ] ${color1} and [ "${name2}" ] ${color2}\n`
+        `Zoom ${key} [ "${name1}" ] ${color1} and [ "${name2}" ] ${color2} are too similar\n`
       );
     });
   });
