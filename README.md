@@ -4,7 +4,7 @@ Color-blind friendliness checker for Maplibre
 
 # Recommendation
 
-Install extentions that would show colors specified in your document. For example, Color Highlight in VS Code.
+Install extensions that would show colors specified in your document. For example, Color Highlight in VS Code.
 
 # Check via terminal
 

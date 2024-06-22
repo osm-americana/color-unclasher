@@ -69,7 +69,7 @@ export default function outPutAnalysis(
     writeResultToFile(
       JSON.stringify(exportPairs, null, 2),
       exportPairsPath,
-      "Non-compliment pairs has been written to"
+      "Non-compliant pairs has been written to"
     );
   }
 
