@@ -15,7 +15,9 @@ const entryScript = require.resolve(process.argv[1]);
 
 if (currentDir === dirname(entryScript)) {
   const args = require("yargs").argv;
-  const exportPairsPath = args['export-pairs'] ? args['export-pairs'] : null;
+  const exportPairsPath = args["export-pairs-to-path"]
+    ? args["export-pairs-to-path"]
+    : null;
   const [filePath, outPutPath] = args._;
 
   if (!filePath) {
