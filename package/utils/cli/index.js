@@ -3,7 +3,7 @@ import extractStyle from "./utils/extractStyle.js";
 import processStyles from "./utils/processStyles.js";
 import outPutAnalysis from "./utils/outPutAnalysis.js";
 
-export default async function commandLine(filePath, outPutPath, exportPairs) {
+export default async function commandLine(filePath, outPutPath, exportPairsPath) {
   const options = await getOptions();
   const layerTypes = ["fill", "line"];
   const colorBlindTypes = [
@@ -21,5 +21,5 @@ export default async function commandLine(filePath, outPutPath, exportPairs) {
     options.minMaxZoom,
     options.targetDeltaE
   );
-  outPutAnalysis(resultArray, colorBlindTypes, outPutPath);
+  outPutAnalysis(resultArray, colorBlindTypes, outPutPath, exportPairsPath);
 }

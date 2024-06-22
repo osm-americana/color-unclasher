@@ -15,7 +15,7 @@ const entryScript = require.resolve(process.argv[1]);
 
 if (currentDir === dirname(entryScript)) {
   const args = require("yargs").argv;
-  const exportPairs = Boolean(args['export-pairs']);
+  const exportPairsPath = args['export-pairs'] ? args['export-pairs'] : null;
   const [filePath, outPutPath] = args._;
 
   if (!filePath) {
@@ -30,7 +30,7 @@ if (currentDir === dirname(entryScript)) {
       process.exit(1);
     }
 
-    commandLine(filePath, outPutPath, exportPairs);
+    commandLine(filePath, outPutPath, exportPairsPath);
   });
 }
 

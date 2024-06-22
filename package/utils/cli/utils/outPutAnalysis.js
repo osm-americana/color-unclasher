@@ -1,13 +1,34 @@
 import fs from "fs";
 import path from "path";
+import prettier from "prettier";
 
 export default function outPutAnalysis(
   resultArray,
   colorBlindTypes,
-  outputPath
+  outputPath,
+  exportPairsPath
 ) {
   const outputMessagesToFileByType = [];
   console.log("\n");
+
+  const exportPairs = {
+    normal: {
+      fill: {},
+      line: {},
+    },
+    deuteranopia: {
+      fill: {},
+      line: {},
+    },
+    protanopia: {
+      fill: {},
+      line: {},
+    },
+    tritanopia: {
+      fill: {},
+      line: {},
+    },
+  };
 
   colorBlindTypes.map((type, index) => {
     // output to file
@@ -18,26 +39,70 @@ export default function outPutAnalysis(
           resultArray[2][0],
           resultArray[4][1][index][1],
           resultArray[2][1],
-          type
+          type,
+          buildExportPairs(exportPairsPath),
+          exportPairs[type]
         ).join("")
       );
     // output to terminal
     } else {
       console.log("------", type, "------");
       console.log("\n     type=fill\n");
-      writeResultToTerminal(resultArray[4][0][index][1], resultArray[2][0]);
+      writeResultToTerminal(
+        resultArray[4][0][index][1],
+        resultArray[2][0],
+        buildExportPairs(exportPairsPath),
+        exportPairs[type].fill
+      );
       console.log("\n     type=line\n");
-      writeResultToTerminal(resultArray[4][1][index][1], resultArray[2][1]);
+      writeResultToTerminal(
+        resultArray[4][1][index][1],
+        resultArray[2][1],
+        buildExportPairs(exportPairsPath),
+        exportPairs[type].line
+      );
       console.log("\n");
     }
   });
 
+  if (exportPairsPath) {
+    writeResultToFile(
+      JSON.stringify(exportPairs, null, 2),
+      exportPairsPath,
+      "Non-compliment pairs has been written to"
+    );
+  }
+
   if (outputPath) {
-    writeResultToFile(outputMessagesToFileByType.join(""), outputPath);
+    writeResultToFile(
+      outputMessagesToFileByType.join(""),
+      outputPath,
+      "Result has been written to"
+    );
   }
 }
 
-function writeResultToTerminal(nonCompliantPairs, colorToLayerIDByZoomLevel) {
+function buildExportPairs(exportPairsPath) {
+  if (exportPairsPath) {
+    return function writeToExportPairs(exportPairsCurrType, key, name1, name2) {
+      if (Array.isArray(exportPairsCurrType[key])) {
+        exportPairsCurrType[key].push([name1, name2]);
+      } else {
+        exportPairsCurrType[key] = [[name1, name2]];
+      }
+    };
+  }
+  else {
+    return () => {};
+  }
+}
+
+function writeResultToTerminal(
+  nonCompliantPairs,
+  colorToLayerIDByZoomLevel,
+  buildExportPairs,
+  exportPairsCurrType
+) {
   Object.keys(nonCompliantPairs).forEach((key) => {
     const pairs = nonCompliantPairs[key];
 
@@ -67,6 +132,8 @@ function writeResultToTerminal(nonCompliantPairs, colorToLayerIDByZoomLevel) {
         }
       }
 
+      buildExportPairs(exportPairsCurrType, key, name1, name2);
+
       console.log(
         `Zoom ${key}`,
         name1,
@@ -80,13 +147,13 @@ function writeResultToTerminal(nonCompliantPairs, colorToLayerIDByZoomLevel) {
   });
 }
 
-function writeResultToFile(outputMessages, outputPath) {
+function writeResultToFile(outputMessages, outputPath, message) {
   fs.writeFile(path.resolve(outputPath), outputMessages, "utf8", (writeErr) => {
     if (writeErr) {
       console.error("Error writing to output file:", writeErr);
       process.exit(1);
     }
-    console.log("Result has been written to", outputPath);
+    console.log(message, outputPath);
   });
 }
 
@@ -95,14 +162,18 @@ function outputNoneCompliantPairs(
   fillColorToLayerIDByZoomLevel,
   lineNonCompliantPairs,
   lineColorToLayerIDByZoomLevel,
-  type
+  type,
+  buildExportPairs,
+  exportPairsType
 ) {
   let outputMessages = [`------ ${type} ------\n`, "\n     type=fill\n"];
   
   pushPairsInformation(
     fillNonCompliantPairs,
     fillColorToLayerIDByZoomLevel,
-    outputMessages
+    outputMessages,
+    buildExportPairs,
+    exportPairsType.fill
   );
 
   outputMessages.push("\n     type=line\n");
@@ -110,7 +181,9 @@ function outputNoneCompliantPairs(
   pushPairsInformation(
     lineNonCompliantPairs,
     lineColorToLayerIDByZoomLevel,
-    outputMessages
+    outputMessages,
+    buildExportPairs,
+    exportPairsType.line
   );
   outputMessages.push("\n");
 
@@ -120,7 +193,9 @@ function outputNoneCompliantPairs(
 function pushPairsInformation(
   pairsArray,
   colorToLayerIDByZoomLevel,
-  outputMessages
+  outputMessages,
+  buildExportPairs,
+  exportPairsCurrType
 ) {
   Object.keys(pairsArray).forEach((key) => {
     const pairs = pairsArray[key];
@@ -149,6 +224,8 @@ function pushPairsInformation(
           return null;
         }
       }
+
+      buildExportPairs(exportPairsCurrType, key, name1, name2);
 
       outputMessages.push(
         `Zoom ${key} [ "${name1}" ] ${color1} and [ "${name2}" ] ${color2} are too similar\n`
