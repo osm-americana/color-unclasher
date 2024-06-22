@@ -26,7 +26,33 @@ Optional flag:
 ```sh
 --export-pairs-to-path outPutPath
 ```
-Export non-compliment pairs into JSON. Modify the output file for pairs to ignore during analyzing.
+Export non-compliant pairs as JSON. Modify the output file for the input file for pairs to ignore during analyzing.
+
+Example exported file:
+```json
+{
+  "normal": {
+    "fill": {},
+    "line": {}
+  },
+  "deuteranopia": {
+    "fill": {},
+    "line": {}
+  },
+  "protanopia": {
+    "fill": {
+      "0": [[["background"], ["landuse_hospital"]]],
+      "1": [[["background"], ["landuse_hospital"]]],
+      "2": [[["background"], ["landuse_hospital"]]]
+    },
+    "line": {}
+  },
+  "tritanopia": {
+    "fill": {},
+    "line": {}
+  }
+}
+```
 
 # Get adjusted colors via module
 
