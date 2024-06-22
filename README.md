@@ -6,22 +6,29 @@ Color-blind friendliness checker for Maplibre
 
 Install extentions that would show colors specified in your document. For example, Color Highlight in VS Code.
 
-# Usage
-
-Check via terminal
+# Check via terminal
 
 ```sh
 color-unclasher filePath [outPutPath] // result would be written to terminal when no outPutPath is provided
 ```
+
 Then answer the questions:
 
 ? Enter the minimum DeltaE for enough difference: 5.5
 
 ? Enter the minimum and maximum zoom level (comma-separated): 0,22
 
+? Enter file path for pairs to ignore: 
+
 --------
 
-Get adjusted colors via module
+Optional flag:
+```sh
+--export-pairs-to-path outPutPath
+```
+Export non-compliment pairs into JSON. Modify the output file for pairs to ignore during analyzing.
+
+# Get adjusted colors via module
 
 ```js
 import ColorUnclasher from "color-unclasher";
