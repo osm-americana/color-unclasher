@@ -6,7 +6,6 @@ import outPutAnalysis from "./utils/outPutAnalysis.js";
 export default async function commandLine(filePath, outPutPath, exportPairs) {
   const options = await getOptions();
   const layerTypes = ["fill", "line"];
-
   const colorBlindTypes = [
     "normal",
     "deuteranopia",
@@ -14,7 +13,7 @@ export default async function commandLine(filePath, outPutPath, exportPairs) {
     "tritanopia",
   ];
 
-  const styles = await extractStyle(filePath);
+  const styles = await extractStyle(filePath, layerTypes);
   const resultArray = processStyles(
     layerTypes,
     styles,

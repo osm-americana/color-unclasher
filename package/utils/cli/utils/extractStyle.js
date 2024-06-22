@@ -20,7 +20,7 @@ At index 1: all layers with type=line
   }
 ]
 */
-export default async function extractStyle(filename) {
+export default async function extractStyle(filename, layerTypes) {
   const styles = new Promise((resolve, reject) => {
     const fillData = {};
     const lineData = {};
@@ -35,15 +35,12 @@ export default async function extractStyle(filename) {
 
       jsonData.layers.forEach((layer) => {
         const sourceLayer = layer["source-layer"] || "background";
-        if (
-          layer["type"] !== "fill" &&
-          layer["type"] !== "background" &&
-          layer["type"] !== "line"
-        ) {
+
+        if ( !layerTypes.includes(layer["type"]) && layer["type"] !== "background" ) {
           return;
         }
 
-        if (layer.type === "fill") {
+        if (layer.type === "fill" || layer.type === "background") {
           parseLayer(
             layer,
             "fill-color",
@@ -65,7 +62,7 @@ export default async function extractStyle(filename) {
       resolve([fillData, lineData]);
     });
   }).catch((error) => {
-      console.error("Error reading file:", error);
+    console.error("Error reading file:", error);
   });
 
   return styles;
