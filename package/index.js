@@ -15,8 +15,8 @@ const entryScript = require.resolve(process.argv[1]);
 
 if (currentDir === dirname(entryScript)) {
   const args = require("yargs").argv;
-  const exportPairsPath = args["export-pairs-to-path"]
-    ? args["export-pairs-to-path"]
+  const exportPairsPath = args["export-pairs-path"]
+    ? args["export-pairs-path"]
     : null;
   const [filePath, outPutPath] = args._;
 
@@ -25,15 +25,15 @@ if (currentDir === dirname(entryScript)) {
     process.exit(1);
   }
 
-  // make sure the file exists
+  // make sure the style file exists
   fs.access(filePath, fs.F_OK, (err) => {
     if (err) {
       console.error("Error reading file:", err);
       process.exit(1);
     }
-
-    commandLine(filePath, outPutPath, exportPairsPath);
   });
+
+  commandLine(filePath, outPutPath, exportPairsPath);
 }
 
 export default {

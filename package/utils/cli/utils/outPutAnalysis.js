@@ -1,12 +1,13 @@
 import fs from "fs";
 import path from "path";
-import prettier from "prettier";
+import { checkStringsExist } from "./string.js";
 
 export default function outPutAnalysis(
   resultArray,
   colorBlindTypes,
   outputPath,
-  exportPairsPath
+  exportPairsPath,
+  nonCompliantPairsToIgnore
 ) {
   const outputMessagesToFileByType = [];
   console.log("\n");
@@ -52,14 +53,20 @@ export default function outPutAnalysis(
         resultArray[4][0][index][1],
         resultArray[2][0],
         buildExportPairs(exportPairsPath),
-        exportPairs[type].fill
+        exportPairs[type].fill,
+        nonCompliantPairsToIgnore !== null
+          ? nonCompliantPairsToIgnore[type]["fill"]
+          : null
       );
       console.log("\n     type=line\n");
       writeResultToTerminal(
         resultArray[4][1][index][1],
         resultArray[2][1],
         buildExportPairs(exportPairsPath),
-        exportPairs[type].line
+        exportPairs[type].line,
+        nonCompliantPairsToIgnore !== null
+          ? nonCompliantPairsToIgnore[type]["line"]
+          : null
       );
       console.log("\n");
     }
@@ -91,8 +98,7 @@ function buildExportPairs(exportPairsPath) {
         exportPairsCurrType[key] = [[name1, name2]];
       }
     };
-  }
-  else {
+  } else {
     return () => {};
   }
 }
@@ -101,7 +107,8 @@ function writeResultToTerminal(
   nonCompliantPairs,
   colorToLayerIDByZoomLevel,
   buildExportPairs,
-  exportPairsCurrType
+  exportPairsCurrType,
+  nonCompliantPairsToIgnore
 ) {
   Object.keys(nonCompliantPairs).forEach((key) => {
     const pairs = nonCompliantPairs[key];
@@ -111,6 +118,14 @@ function writeResultToTerminal(
       const color2 = p[1];
       const name1 = colorToLayerIDByZoomLevel[key][color1];
       const name2 = colorToLayerIDByZoomLevel[key][color2];
+
+      // if the pair is configured to be ignored, then don't output
+      if (
+        nonCompliantPairsToIgnore && nonCompliantPairsToIgnore[key] &&
+        checkStringsExist(nonCompliantPairsToIgnore[key], name1[0], name2[0])
+      ) {
+        return null;
+      }
 
       /* For paint expressions that contains case
          For example, for layerID "water"

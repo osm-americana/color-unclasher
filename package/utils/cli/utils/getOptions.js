@@ -4,7 +4,7 @@ export default async function getOptions() {
   const defaultOptions = {
     targetDeltaE: 5.5,
     minMaxZoom: [0, 22],
-    ignorePairs: [],
+    ignorePairsFile: null,
   };
 
   const questions = [
@@ -26,12 +26,9 @@ export default async function getOptions() {
     },
     {
       type: "input",
-      name: "ignorePairs",
-      message: "Enter pairs to ignore (comma-separated):",
-      filter: (input) =>
-        input
-          ? input.split(",").map((pair) => pair.trim())
-          : defaultOptions.ignorePairs,
+      name: "ignorePairsFile",
+      message: "Enter the file containing non-compliant pairs to ignore:",
+      default: defaultOptions.ignorePairsFile,
     },
   ];
 
