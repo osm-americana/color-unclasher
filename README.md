@@ -18,13 +18,13 @@ Then answer the questions:
 
 ? Enter the minimum and maximum zoom level (comma-separated): 0,22
 
-? Enter file path for pairs to ignore: 
+? Enter file path for non-compliant pairs to ignore: 
 
 --------
 
 Optional flag:
 ```sh
---export-pairs-to-path outPutPath
+--export-pairs-path outPutPath
 ```
 Export non-compliant pairs as JSON. Modify the output file for the input file for pairs to ignore during analyzing.
 
