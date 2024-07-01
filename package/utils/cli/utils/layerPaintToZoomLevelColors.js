@@ -107,11 +107,11 @@ function getLayerColorsAtZooms(
     })
     fillColors = fillColor.slice(3);
   // regular stops
-  } else if (fillColor["stops"]) {
+  } else if (fillColor?.["stops"]) {
     interpolationType['name'] = 'linear';
     fillColors = fillColor["stops"].flat();
   // Case
-  } else if (fillColor[0] === 'case') {
+  } else if (fillColor?.[0] === 'case') {
     const conditionList = fillColor[1].slice(1);
     // console.log("conditionList", conditionList, conditionList.length);
     const colorList = fillColor.slice(2);

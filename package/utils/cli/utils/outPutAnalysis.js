@@ -1,4 +1,4 @@
-import { checkStringsExist } from "./string.js";
+import { checkPairExist } from "./string.js";
 import { writeFile } from "./IO.js";
 
 export default async function outPutAnalysis(
@@ -118,7 +118,7 @@ function writeResultToTerminal(
       // if the pair is configured to be ignored, then don't output
       if (
         nonCompliantPairsToIgnore && nonCompliantPairsToIgnore[key] &&
-        checkStringsExist(nonCompliantPairsToIgnore[key], name1[0], name2[0])
+        checkPairExist(nonCompliantPairsToIgnore[key], name1[0], name2[0])
       ) {
         return null;
       }
@@ -214,7 +214,7 @@ function pushPairsInformation(
       if (
         nonCompliantPairsToIgnore &&
         nonCompliantPairsToIgnore[key] &&
-        checkStringsExist(nonCompliantPairsToIgnore[key], name1[0], name2[0])
+        checkPairExist(nonCompliantPairsToIgnore[key], name1[0], name2[0])
       ) {
         return null;
       }

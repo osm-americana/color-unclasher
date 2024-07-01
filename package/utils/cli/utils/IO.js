@@ -39,9 +39,7 @@ export function isValidStructure(obj, colorBlindTypes, layerTypes) {
       return (
         Array.isArray(subArray1) &&
         Array.isArray(subArray1[0]) &&
-        Array.isArray(subArray1[1]) &&
-        typeof subArray1[0][0] === "string" &&
-        typeof subArray1[1][0] === "string"
+        Array.isArray(subArray1[1])
       );
     });
   }
