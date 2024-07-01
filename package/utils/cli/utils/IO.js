@@ -1,20 +1,22 @@
 import fs from "fs";
 import path from "path";
 
-export async function readFile(exportPairsPath) {
+export async function readFile(path) {
   const pairs = new Promise((resolve, reject) => {
-    fs.readFile(exportPairsPath, "utf8", (err, data) => {
+    fs.readFile(path, "utf8", (err, data) => {
       if (err) {
-        console.error("Error reading file:", err);
-        return;
+        throw new Error("Error reading file:", err);
       }
 
-      const jsonData = JSON.parse(data);
-
-      resolve(jsonData);
+      try {
+        const jsonData = JSON.parse(data);
+        resolve(jsonData);
+      } catch (error) {
+        console.log('\nProcess terminated.');
+        console.log(`Please check ${path} content format.`);
+        throw new Error("Error parsing file into JSON object.", error);
+      }
     });
-  }).catch((error) => {
-    console.error("Error reading file:", error);
   });
 
   return pairs;
@@ -28,4 +30,69 @@ export async function writeFile(outputMessages, outputPath, message) {
     }
     console.log(message, outputPath);
   });
+}
+
+export function isValidStructure(obj, colorBlindTypes, layerTypes) {
+  function isArrayOfArraysOfArrays(item) {
+    if (!Array.isArray(item)) return false;
+    return item.every((subArray1) => {
+      return (
+        Array.isArray(subArray1) &&
+        Array.isArray(subArray1[0]) &&
+        Array.isArray(subArray1[1]) &&
+        typeof subArray1[0][0] === "string" &&
+        typeof subArray1[1][0] === "string"
+      );
+    });
+  }
+
+  let hasAtLeastOneField = false;
+
+  // Check if the object has at least one of the required top-level fields
+  for (const field of colorBlindTypes) {
+    if (obj.hasOwnProperty(field)) {
+      hasAtLeastOneField = true;
+
+      // Each present top-level field must be an object containing 'fill' and 'line'
+      const subObject = obj[field];
+      if (typeof subObject !== "object" || subObject === null) {
+        throw new Error(
+          `For type ${field}, must contain "fill" and "line" fields`
+        );
+      }
+
+      for (const innerField of layerTypes) {
+        if (subObject.hasOwnProperty(innerField)) {
+          const innerSubObject = subObject[innerField];
+          if (typeof innerSubObject !== "object" || innerSubObject === null)
+            return false;
+
+          for (const key in innerSubObject) {
+            const isNumberOrString =
+              typeof key === "number" ||
+              (typeof key === "string" && !isNaN(key));
+
+            if (!isNumberOrString) {
+              throw new Error(
+                `For type ${field} and type=${innerField}, the zoom level ${key} isn't a number`
+              );
+            }
+
+            if (innerSubObject.hasOwnProperty(key)) {
+              if (!isArrayOfArraysOfArrays(innerSubObject[key])) return false;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // If no required top-level field is present
+  if (!hasAtLeastOneField) {
+    throw new Error(
+      "Must contain at least one of 'normal', 'deuteranopia', 'protanopia', or 'tritanopia' field."
+    );
+  }
+
+  return true;
 }
