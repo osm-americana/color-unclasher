@@ -2,7 +2,7 @@ import getOptions from "./utils/getOptions.js";
 import extractStyle from "./utils/extractStyle.js";
 import processStyles from "./utils/processStyles.js";
 import outPutAnalysis from "./utils/outPutAnalysis.js";
-import readFile from "./utils/IO.js";
+import { readFile } from "./utils/IO.js";
 
 import fs from "fs";
 
@@ -42,7 +42,7 @@ export default async function commandLine(filePath, outPutPath, exportPairsPath)
     nonCompliantPairsToIgnore = await readFile(options.ignorePairsFile);
   }
 
-  outPutAnalysis(
+  await outPutAnalysis(
     resultArray,
     colorBlindTypes,
     outPutPath,

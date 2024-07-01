@@ -1,6 +1,7 @@
 import fs from "fs";
+import path from "path";
 
-export default async function readFile(exportPairsPath) {
+export async function readFile(exportPairsPath) {
   const pairs = new Promise((resolve, reject) => {
     fs.readFile(exportPairsPath, "utf8", (err, data) => {
       if (err) {
@@ -15,7 +16,16 @@ export default async function readFile(exportPairsPath) {
   }).catch((error) => {
     console.error("Error reading file:", error);
   });
-  // JSON.stringify(pairs, null, 2);
 
   return pairs;
+}
+
+export async function writeFile(outputMessages, outputPath, message) {
+  fs.writeFile(path.resolve(outputPath), outputMessages, "utf8", (writeErr) => {
+    if (writeErr) {
+      console.error("Error writing to output file:", writeErr);
+      process.exit(1);
+    }
+    console.log(message, outputPath);
+  });
 }
