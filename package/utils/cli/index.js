@@ -9,6 +9,10 @@ import fs from "fs";
 export default async function commandLine(filePath, outPutPath, exportPairsPath) {
   const options = await getOptions();
 
+  if (options.minZoomLevel > options.maxZoomLevel) {
+    throw new Error("maxZoom must be greater than or equal to minZoom");
+  }
+
   if (options.ignorePairsFile) {
     // make sure the non-compliant pairs file exists
     fs.access(options.ignorePairsFile, fs.F_OK, (err) => {

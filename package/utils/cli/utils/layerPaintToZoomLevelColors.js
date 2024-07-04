@@ -28,14 +28,6 @@ export default function layerPaintToZoomLevelColors(
   minZoomLevel = 0,
   maxZoomLevel = 20
 ) {
-  if (
-    typeof minZoomLevel !== "number" ||
-    typeof maxZoomLevel !== "number" ||
-    minZoomLevel > maxZoomLevel
-  ) {
-    throw new Error("Invalid minZoomLevel or maxZoomLevel");
-  }
-
   const id = layer.id;
   const style = layer.paint;
 
@@ -179,8 +171,11 @@ function getInterpolatedColorAtZoom(
 
   let points = [];
   for (let i = 0; i < flatPoints.length; i += 2) {
+    console.log(flatPoints[i], flatPoints[i + 1]);
     points.push([flatPoints[i], flatPoints[i + 1]]);
   }
+
+  console.log(flatPoints, points);
 
   if (value <= points[0][0]) {
     return points[0][1];

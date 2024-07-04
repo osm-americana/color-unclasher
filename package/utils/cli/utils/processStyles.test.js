@@ -1,11 +1,11 @@
 import { getZoomLevelColorsArray } from "./processStyles";
 
 test("correctly get fill colors", () => {
-  const data = {
+  const style = {
     aeroway: [{ id: "airport", paint: { "fill-color": "hsl(0, 0%, 75%)" } }],
   };
 
-  expect(getZoomLevelColorsArray(data, [0, 5])).toStrictEqual([
+  expect(getZoomLevelColorsArray(style, [0, 5])).toStrictEqual([
     [
       "airport",
       {
@@ -21,7 +21,7 @@ test("correctly get fill colors", () => {
 });
 
 test("correctly get stops colors", () => {
-  const data = {
+  const style = {
     water: [
       {
         id: "ocean",
@@ -37,7 +37,7 @@ test("correctly get stops colors", () => {
     ],
   };
 
-  expect(getZoomLevelColorsArray(data, [5, 12])).toStrictEqual([
+  expect(getZoomLevelColorsArray(style, [5, 12])).toStrictEqual([
     [
       "ocean",
       {
@@ -55,7 +55,7 @@ test("correctly get stops colors", () => {
 });
 
 test("correctly get interpolate linear colors", () => {
-  const data = {
+  const style = {
     transportation: [
       {
         id: "road",
@@ -74,7 +74,7 @@ test("correctly get interpolate linear colors", () => {
     ],
   };
 
-  expect(getZoomLevelColorsArray(data, [0, 10])).toStrictEqual([
+  expect(getZoomLevelColorsArray(style, [0, 10])).toStrictEqual([
     [
       "road",
       {
@@ -95,7 +95,7 @@ test("correctly get interpolate linear colors", () => {
 });
 
 test("correctly get interpolate linear colors with multiple steps", () => {
-  const data = {
+  const style = {
     test: [
       {
         id: "test",
@@ -120,7 +120,7 @@ test("correctly get interpolate linear colors with multiple steps", () => {
     ],
   };
 
-  expect(getZoomLevelColorsArray(data, [0, 20])).toStrictEqual([
+  expect(getZoomLevelColorsArray(style, [0, 20])).toStrictEqual([
     [
       "test",
       {
@@ -151,7 +151,7 @@ test("correctly get interpolate linear colors with multiple steps", () => {
 });
 
 test("correctly get interpolate-hcl linear colors", () => {
-  const data = {
+  const style = {
     test: [
       {
         id: "test",
@@ -170,7 +170,7 @@ test("correctly get interpolate-hcl linear colors", () => {
     ],
   };
 
-  expect(getZoomLevelColorsArray(data, [0, 10])).toStrictEqual([
+  expect(getZoomLevelColorsArray(style, [0, 10])).toStrictEqual([
     [
       "test",
       {
@@ -191,7 +191,7 @@ test("correctly get interpolate-hcl linear colors", () => {
 });
 
 test("correctly get interpolate exponential with base=1.2 colors", () => {
-  const data = {
+  const style = {
     transportation: [
       {
         id: "road",
@@ -210,7 +210,7 @@ test("correctly get interpolate exponential with base=1.2 colors", () => {
     ],
   };
 
-  expect(getZoomLevelColorsArray(data, [4, 11])).toStrictEqual([
+  expect(getZoomLevelColorsArray(style, [4, 11])).toStrictEqual([
     [
       "road",
       {
@@ -228,7 +228,7 @@ test("correctly get interpolate exponential with base=1.2 colors", () => {
 });
 
 test("correctly get interpolate exponential with base=2 colors", () => {
-  const data = {
+  const style = {
     transportation: [
       {
         id: "road",
@@ -247,7 +247,7 @@ test("correctly get interpolate exponential with base=2 colors", () => {
     ],
   };
 
-  expect(getZoomLevelColorsArray(data, [4, 11])).toStrictEqual([
+  expect(getZoomLevelColorsArray(style, [4, 11])).toStrictEqual([
     [
       "road",
       {
@@ -264,8 +264,138 @@ test("correctly get interpolate exponential with base=2 colors", () => {
   ]);
 });
 
+test.only("correctly get interpolate exponential with base=1.2 colors and match", () => {
+  const style = {
+    transportation: [
+      {
+        id: "complicated",
+        paint: {
+          "line-color": [
+            "interpolate",
+            ["exponential", 1.2],
+            ["zoom"],
+            5,
+            [
+              "match",
+              ["coalesce", ["get", "toll"], 0],
+              1, "hsl(0, 77%, 90%)",
+              "hsl(0, 10%, 90%)",
+            ],
+            9,
+            [
+              "match",
+              ["coalesce", ["get", "toll"], 0],
+              1, "hsl(48, 77%, 10%)",
+              "hsl(48, 10%, 10%)",
+            ],
+          ],
+        },
+      },
+    ],
+  };
+
+  expect(getZoomLevelColorsArray(style, [4, 10])).toStrictEqual([
+    [
+      [["complicated"], ["coalesce", ["get", "toll"], 0], 1],
+      {
+        4: "hsl(0, 77%, 90%)",
+        5: "hsl(0, 77%, 90%)",
+        6: "#d3b2ac",
+        7: "#a68b7e",
+        8: "#6f5d48",
+        9: "hsl(48, 77%, 10%)",
+        10: "hsl(48, 77%, 10%)",
+      },
+    ],
+    [
+      [["complicated"], ["coalesce", ["get", "toll"], 0], "default"],
+      {
+        4: "hsl(0, 10%, 90%)",
+        5: "hsl(0, 10%, 90%)",
+        6: "#c2bebd",
+        7: "#94918f",
+        8: "#5e5b59",
+        9: "hsl(48, 10%, 10%)",
+        10: "hsl(48, 10%, 10%)",
+      },
+    ],
+  ]);
+});
+
+test.only("correctly get interpolate exponential with base=1.2 colors and match complicated", () => {
+  const style = {
+    transportation: [
+      {
+        id: "complicated",
+        paint: {
+          "line-color": [
+            "interpolate",
+            ["exponential", 1.2],
+            ["zoom"],
+            5,
+            [
+              "match",
+              ["coalesce", ["get", "toll"], 0],
+              3, "hsl(0, 100%, 90%)",
+              4, "hsl(0, 50%, 90%)",
+              "hsl(0, 10%, 90%)",
+            ],
+            9,
+            [
+              "match",
+              ["coalesce", ["get", "toll"], 0],
+              3, "hsl(48, 100%, 10%)",
+              4, "hsl(48, 55%, 10%)",
+              "hsl(48, 10%, 10%)",
+            ],
+          ],
+        },
+      },
+    ],
+  };
+
+  expect(getZoomLevelColorsArray(style, [4, 10])).toStrictEqual([
+    [
+      [["complicated"], ["coalesce", ["get", "toll"], 0], 3],
+      {
+        4: "hsl(0, 100%, 90%)",
+        5: "hsl(0, 100%, 90%)",
+        6: "#d9aea6",
+        7: "#ab8978",
+        8: "#755d42",
+        9: "hsl(48, 100%, 10%)",
+        10: "hsl(48, 100%, 10%)",
+      },
+    ],
+    [
+      [["complicated"], ["coalesce", ["get", "toll"], 0], 4],
+      {
+        4: "hsl(0, 50%, 90%)",
+        5: "hsl(0, 50%, 90%)",
+        6: "#ccb7b3",
+        7: "#9f8e85",
+        8: "#695d4e",
+        9: "hsl(48, 55%, 10%)",
+        10: "hsl(48, 55%, 10%)",
+      },
+    ],
+    [
+      [["complicated"], ["coalesce", ["get", "toll"], 0], "default"],
+      {
+        4: "hsl(0, 10%, 90%)",
+        5: "hsl(0, 10%, 90%)",
+        6: "#c2bebd",
+        7: "#94918f",
+        8: "#5e5b59",
+        9: "hsl(48, 10%, 10%)",
+        10: "hsl(48, 10%, 10%)",
+      },
+    ],
+  ]);
+});
+
 test("correctly get case colors", () => {
-  const data = {
+  const style = {
     transportation: [
       {
         id: "road",
@@ -285,7 +415,7 @@ test("correctly get case colors", () => {
     ],
   };
 
-  expect(getZoomLevelColorsArray(data, [4, 6])).toStrictEqual([
+  expect(getZoomLevelColorsArray(style, [4, 6])).toStrictEqual([
     [
       ["road", "==,get,intermittent,1"],
       {

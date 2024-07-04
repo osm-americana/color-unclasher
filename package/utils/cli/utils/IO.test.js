@@ -104,19 +104,6 @@ test("fail invalid structure", () => {
   expect(isValidStructure(object, colorBlindTypes, layerTypes)).toBe(false);
 });
 
-// test("fail invalid structure", () => {
-//   const object = {
-//     normal: {
-//       fill: {
-//         6: [[[1], ["grass"]]],
-//       },
-//       line: {},
-//     }
-//   };
-
-//   expect(isValidStructure(object, colorBlindTypes, layerTypes)).toBe(false);
-// });
-
 test("fail invalid structure", () => {
   const object = {
     normal: {
