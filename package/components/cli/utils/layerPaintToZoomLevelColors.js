@@ -1,4 +1,4 @@
-import { getInterpolatedColor } from '../../utils/color';
+import { getInterpolatedColor } from '../../utils/color.js';
 
 /*
   Input: {

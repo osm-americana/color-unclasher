@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-import commandLine from "./utils/cli/index.js";
-import adjustRGB from "./utils/module/adjustRGB.js";
-import adjustHSL from "./utils/module/adjustHSL.js";
+import commandLine from "./components/cli/index.js";
+import adjustRGB from "./components/module/adjustRGB.js";
+import adjustHSL from "./components/module/adjustHSL.js";
 
 import { fileURLToPath } from "url";
 import { dirname } from "path";

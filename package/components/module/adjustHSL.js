@@ -1,6 +1,6 @@
 import colorBlind from "color-blind";
 import chroma from "chroma-js";
-import { parseHSL } from "./color.js";
+import { parseHSL } from "../utils/color.js";
 import tinycolor from "tinycolor2";
 
 export default function adjustHSL(color1, color2, mode, threshHold = 7) {
