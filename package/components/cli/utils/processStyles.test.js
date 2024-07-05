@@ -1,4 +1,5 @@
 import { getZoomLevelColorsArray } from "./processStyles";
+import {writeFile} from './IO';
 
 test("correctly get fill colors", () => {
   const style = {
@@ -294,10 +295,11 @@ test("correctly get interpolate exponential with base=1.2 colors and match", () 
     ],
   };
 
-  expect(getZoomLevelColorsArray(style, [4, 10])).toStrictEqual([
+  expect(getZoomLevelColorsArray(style, [3, 11])).toStrictEqual([
     [
       [["complicated"], ["coalesce", ["get", "toll"], 0], 1],
       {
+        3: "hsl(0, 77%, 90%)",
         4: "hsl(0, 77%, 90%)",
         5: "hsl(0, 77%, 90%)",
         6: "#d3b2ac",
@@ -305,11 +307,13 @@ test("correctly get interpolate exponential with base=1.2 colors and match", () 
         8: "#6f5d48",
         9: "hsl(48, 77%, 10%)",
         10: "hsl(48, 77%, 10%)",
+        11: "hsl(48, 77%, 10%)",
       },
     ],
     [
       [["complicated"], ["coalesce", ["get", "toll"], 0], "default"],
       {
+        3: "hsl(0, 10%, 90%)",
         4: "hsl(0, 10%, 90%)",
         5: "hsl(0, 10%, 90%)",
         6: "#c2bebd",
@@ -317,6 +321,7 @@ test("correctly get interpolate exponential with base=1.2 colors and match", () 
         8: "#5e5b59",
         9: "hsl(48, 10%, 10%)",
         10: "hsl(48, 10%, 10%)",
+        11: "hsl(48, 10%, 10%)",
       },
     ],
   ]);

@@ -134,14 +134,15 @@ function getLayerColorsAtZooms(
     process.exit(1);
   }
 
-
   if (colorSpecification?.[1]?.[0] === "match") {
-    console.log(
-      colorSpecification,
+    return convertToFormat(
+      id,
+      fillColor,
       interpolationType,
-      interpolationColorSpace
+      interpolationColorSpace,
+      minZoomLevel,
+      maxZoomLevel
     );
-    return [];
   }
 
   for (let i = minZoomLevel; i < maxZoomLevel + 1; i++) {
@@ -154,6 +155,82 @@ function getLayerColorsAtZooms(
   }
 
   return [id, colorsAtZooms];
+}
+
+function convertToFormat(
+  layerID,
+  expression,
+  interpolationType,
+  interpolationColorSpace,
+  minZoomLevel,
+  maxZoomLevel
+) {
+  const stepValues = expression.slice(3).filter((_, i) => i % 2 === 0);
+  const matchExpressions = expression.slice(3).filter((_, i) => i % 2 !== 0);
+  const numberOfMatchCases = (matchExpressions[0].length - 3) / 2 + 1;
+  const matchCases = matchExpressions[0]
+    .slice(2)
+    .filter((_, i, arr) => i % 2 === 0 && i < arr.length - 1);
+
+  const condition = matchExpressions[0][1];
+  const result = {};
+  let index = 0;
+  let step = stepValues[index];
+
+  for (
+    let matchCaseIndex = 0;
+    matchCaseIndex < numberOfMatchCases;
+    matchCaseIndex++
+  ) {
+    const layer = {};
+
+    for (let zoom = minZoomLevel; zoom <= maxZoomLevel; zoom++) {
+      const colorList = matchExpressions[index]
+        .slice(2)
+        .filter((_, i, arr) => i === arr.length - 1 || i % 2 !== 0);
+
+      if (zoom < step && index == 0) {
+        layer[zoom] = colorList[matchCaseIndex];
+      } else if (zoom == step) {
+        layer[zoom] = colorList[matchCaseIndex];
+        if (index !== 1) {
+          index++;
+          step = stepValues[index];
+        }
+      } else if (zoom < step && index > 0) {
+        const colorList1 = matchExpressions[index - 1]
+          .slice(2)
+          .filter((_, i, arr) => i === arr.length - 1 || i % 2 !== 0);
+
+        layer[zoom] = getInterpolatedColor(
+          zoom,
+          stepValues[index - 1],
+          step,
+          interpolationType,
+          interpolationColorSpace,
+          colorList1[matchCaseIndex],
+          colorList[matchCaseIndex]
+        );
+      } else if (zoom > step) {
+        layer[zoom] = colorList[matchCaseIndex];
+      }
+    }
+
+    let name;
+
+    if (matchCaseIndex == numberOfMatchCases - 1) {
+      name = [[layerID], condition, "default"];
+    } else {
+      name = [[layerID], condition, matchCases[matchCaseIndex]];
+    }
+
+    result[matchCaseIndex] = [name, layer];
+
+    index = 0;
+    step = stepValues[index];
+  }
+
+  return result;
 }
 
 /*
