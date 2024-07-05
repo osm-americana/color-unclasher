@@ -1,9 +1,4 @@
-import {
-  Interpolate,
-  interpolates,
-  Color,
-} from "@maplibre/maplibre-gl-style-spec";
-import chroma from "chroma-js";
+import { getInterpolatedColor } from './components/utils/color.js';
 
 function convertToFormat(layerID, expression) {
   const stepValues = expression.slice(3).filter((_, i) => i % 2 === 0);
@@ -23,6 +18,7 @@ function convertToFormat(layerID, expression) {
       const colorList = matchExpressions[index]
         .slice(2)
         .filter((_, i, arr) => i === arr.length - 1 || i % 2 !== 0);
+      
       if (zoom < step && index == 0) {
         layer[zoom] = colorList[matchCaseIndex];
       } else if (zoom == step) {
@@ -36,30 +32,18 @@ function convertToFormat(layerID, expression) {
           .slice(2)
           .filter((_, i, arr) => i === arr.length - 1 || i % 2 !== 0);
 
-
-        const t = Interpolate.interpolationFactor(
+        layer[zoom] = getInterpolatedColor(
+          zoom,
+          stepValues[index - 1],
+          step,
           {
             name: "exponential",
             base: 1.2,
           },
-          zoom,
-          stepValues[index - 1],
-          step
+          "rgb",
+          colorList1[matchCaseIndex],
+          colorList[matchCaseIndex]
         );
-
-        const color = interpolates.color(
-          Color.parse(colorList1[matchCaseIndex]),
-          Color.parse(colorList[matchCaseIndex]),
-          t
-        );
-
-        const r = color.r * 255;
-        const g = color.g * 255;
-        const b = color.b * 255;
-
-        const chromaColor = chroma(r, g, b).hex();
-
-        layer[zoom] = chromaColor;
       } else if (zoom > step) {
         layer[zoom] = colorList[matchCaseIndex];
       }

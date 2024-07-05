@@ -1,4 +1,4 @@
-import { getColorModel } from "./color.js";
+import { getColorModel } from "../utils/color";
 import adjustRGB from "./adjustRGB.js";
 import tinycolor from "tinycolor2";
 import chroma from "chroma-js";

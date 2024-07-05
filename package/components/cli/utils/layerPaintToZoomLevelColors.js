@@ -1,8 +1,4 @@
-import {
-  Interpolate, interpolates,
-  Color,
-} from "@maplibre/maplibre-gl-style-spec";
-import chroma from "chroma-js";
+import { getInterpolatedColor } from '../../utils/color';
 
 /*
   Input: {
@@ -46,7 +42,7 @@ export default function layerPaintToZoomLevelColors(
   //   ? style["fill-color"]
   //   : style["background-color"];
 
-  // Simple fill color value like "#fff"
+  // Simple fill color currZoom like "#fff"
   if (typeof style["fill-color"] === "string" || typeof style["line-color"] === "string") {
     const zoomLevelColors = {};
     const color = style["fill-color"] || style["line-color"];
@@ -80,7 +76,7 @@ function getLayerColorsAtZooms(
   minZoomLevel,
   maxZoomLevel
 ) {
-  let fillColors;
+  let colorSpecification;
   const colorsAtZooms = {};
   const interpolationType = {};
   let interpolationColorSpace = 'rgb';
@@ -97,11 +93,11 @@ function getLayerColorsAtZooms(
       const key = index == 0 ? "name" : (typeof p === 'number' ? 'base' : 'controlPoints' );
       interpolationType[key] = p;
     })
-    fillColors = fillColor.slice(3);
+    colorSpecification = fillColor.slice(3);
   // regular stops
   } else if (fillColor?.["stops"]) {
     interpolationType['name'] = 'linear';
-    fillColors = fillColor["stops"].flat();
+    colorSpecification = fillColor["stops"].flat();
   // Case
   } else if (fillColor?.[0] === 'case') {
     const conditionList = fillColor[1].slice(1);
@@ -126,9 +122,31 @@ function getLayerColorsAtZooms(
     throw new Error("unknown type", fillColor);
   }
 
+  if (
+    interpolationColorSpace !== "rgb" &&
+    interpolationColorSpace !== "hcl" &&
+    interpolationColorSpace !== "lab"
+  ) {
+    console.error(
+      "Invalid interpolation color space. Must be rgb, hcl, or lab:",
+      interpolationColorSpace
+    );
+    process.exit(1);
+  }
+
+
+  if (colorSpecification?.[1]?.[0] === "match") {
+    console.log(
+      colorSpecification,
+      interpolationType,
+      interpolationColorSpace
+    );
+    return [];
+  }
+
   for (let i = minZoomLevel; i < maxZoomLevel + 1; i++) {
-    colorsAtZooms[i] = getInterpolatedColorAtZoom(
-      fillColors,
+    colorsAtZooms[i] = getInterpolatedColorAtCurrZoomLevel(
+      colorSpecification,
       i,
       interpolationType,
       interpolationColorSpace,
@@ -153,66 +171,43 @@ interpolationType:
     controlPoints: [number, number, number, number];
 };
 */
-function getInterpolatedColorAtZoom(
-  flatPoints,
-  value,
+function getInterpolatedColorAtCurrZoomLevel(
+  colorSpecification,
+  currZoom,
   interpolationType,
   interpolationColorSpace
 ) {
 
-  if ( interpolationColorSpace !== "rgb" && interpolationColorSpace !== "hcl" &&
-    interpolationColorSpace !== "lab" ) {
-    console.error(
-      "Invalid interpolation color space. Must be rgb, hcl, or lab",
-      interpolationColorSpace
-    );
-    process.exit(1);
-  }
-
   let points = [];
-  for (let i = 0; i < flatPoints.length; i += 2) {
-    console.log(flatPoints[i], flatPoints[i + 1]);
-    points.push([flatPoints[i], flatPoints[i + 1]]);
+  for (let i = 0; i < colorSpecification.length; i += 2) {
+    points.push([colorSpecification[i], colorSpecification[i + 1]]);
   }
 
-  console.log(flatPoints, points);
-
-  if (value <= points[0][0]) {
+  if (currZoom <= points[0][0]) {
     return points[0][1];
-  } else if (value >= points[points.length - 1][0]) {
+  } else if (currZoom >= points[points.length - 1][0]) {
     return points[points.length - 1][1];
   } else {
     for (let i = 1; i < points.length; i++) {
-      if (value == points[i][0]) {
+      if (currZoom == points[i][0]) {
         return points[i][1];
       }
 
-      if (value < points[i][0]) {
+      if (currZoom < points[i][0]) {
         let lowerValue = points[i - 1][0];
         let color1 = points[i - 1][1];
         let higherValue = points[i][0];
         let color2 = points[i][1];
 
-        const t = Interpolate.interpolationFactor(
-          interpolationType,
-          value,
+        return getInterpolatedColor(
+          currZoom,
           lowerValue,
-          higherValue
+          higherValue,
+          interpolationType,
+          interpolationColorSpace,
+          color1,
+          color2
         );
-
-        const color = interpolates.color(
-          Color.parse(color1),
-          Color.parse(color2),
-          t,
-          interpolationColorSpace
-        );
-
-        const r = color.r * 255;
-        const g = color.g * 255;
-        const b = color.b * 255;
-
-        const chromaColor = chroma(r, g, b).hex();
-        return chromaColor;
       }
     }
   }

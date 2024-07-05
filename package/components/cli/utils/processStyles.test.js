@@ -264,7 +264,7 @@ test("correctly get interpolate exponential with base=2 colors", () => {
   ]);
 });
 
-test.only("correctly get interpolate exponential with base=1.2 colors and match", () => {
+test("correctly get interpolate exponential with base=1.2 colors and match", () => {
   const style = {
     transportation: [
       {
@@ -322,7 +322,7 @@ test.only("correctly get interpolate exponential with base=1.2 colors and match"
   ]);
 });
 
-test.only("correctly get interpolate exponential with base=1.2 colors and match complicated", () => {
+test("correctly get interpolate exponential with base=1.2 colors and match complicated", () => {
   const style = {
     transportation: [
       {

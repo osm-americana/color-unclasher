@@ -1,6 +1,6 @@
 import colorBlind from "color-blind";
 import chroma from "chroma-js";
-import { convertToTargetFormat } from "./color.js";
+import { convertToTargetFormat } from "../utils/color";
 import tinycolor from "tinycolor2";
 
 /* 

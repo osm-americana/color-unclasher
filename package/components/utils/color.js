@@ -1,5 +1,10 @@
-import Color from "color";
+import {
+  Interpolate,
+  interpolates,
+  Color,
+} from "@maplibre/maplibre-gl-style-spec";
 import tinycolor from "tinycolor2";
+import chroma from "chroma-js";
 
 // TODO: need testing
 export function convertToTargetFormat(adjustedColor, color2) {
@@ -76,4 +81,30 @@ export function parseHSL(hslString) {
     lightness: parseFloat(lightness),
     alpha: alpha !== undefined ? parseFloat(alpha) : 1, // Default to 1 if alpha is not specified
   };
+}
+
+export function getInterpolatedColor(
+  value,
+  lowerValue,
+  higherValue,
+  interpolationType,
+  interpolationColorSpace,
+  color1,
+  color2
+) {
+  const t = Interpolate.interpolationFactor(
+    interpolationType,
+    value,
+    lowerValue,
+    higherValue
+  );
+
+  const color = interpolates.color(
+    Color.parse(color1),
+    Color.parse(color2),
+    t,
+    interpolationColorSpace
+  );
+
+  return chroma(color.r * 255, color.g * 255, color.b * 255).hex();
 }
