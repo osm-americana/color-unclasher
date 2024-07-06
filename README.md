@@ -1,6 +1,6 @@
 # Color-Unclasher
 
-Color-Unclasher is designed to help developers making their style specifications more accessible to users with color blindness. This tool analyzes color combinations within a style specification and reports any non-compliant pairs. 
+Color-Unclasher is designed to help developers making their Maplibre style specifications more accessible to users with color blindness. This tool analyzes color combinations within a style specification and reports any non-compliant pairs. 
 
 The result could be in human readable format (written to terminal or a file) or just data structures exported to another file. 
 
