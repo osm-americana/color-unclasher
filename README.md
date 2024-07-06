@@ -11,8 +11,10 @@ The exported file for non-compliant pairs in a specific data structure could be 
 Install extensions that would show colors specified in your document. For example, Color Highlight in VS Code.
 
 # Example Workflow
-1.  **Run Analysis In Terminal with the Optional Flag --export-pairs-path **
-Result in human readable format would be written to terminal when no outPutPath is specified 
+1.  **Run Analysis In Terminal with the Optional Flag --export-pairs-path Followed By a File Path**
+
+Result in human readable format would be written to terminal when no outPutPath is specified
+
 A file would be written for non-compliant pairs stored in data structure 
 ```sh
 color-unclasher filePath [outPutPath] --export-pairs-path outPutPairPath
@@ -35,9 +37,7 @@ Zoom 6 [ 'airport' ] [ 'hsl(0, 0%, 75%)' ] and [ 'grass' ] [ '#bababa' ] are too
 
      type=line
 
-Zoom 17 [ 'bus' ] [ 'hsl(211, 50%, 85%)' ] and [
-  'road_casing_surface_all_,get,class,tertiary_!,coalesce,get,ramp,0,1_,coalesce,get,expressway,0,1'
-] [ '#d3d9e8' ] are too similar
+Zoom 17 [ 'bus' ] [ 'hsl(211, 50%, 85%)' ] and [ 'bike' ] [ '#d3d9e8' ] are too similar
 
 
 ------ deuteranopia ------
@@ -48,9 +48,7 @@ Zoom 6 [ 'airport' ] [ 'hsl(0, 0%, 75%)' ] and [ 'grass' ] [ '#bababa' ] are too
 
      type=line
 
-Zoom 16 [ 'bus' ] [ 'hsl(211, 50%, 85%)' ] and [
-  'road_casing_surface_all_,get,class,tertiary_!,coalesce,get,ramp,0,1_,coalesce,get,expressway,0,1'
-] [ '#dedae6' ] are too similar
+Zoom 16 [ 'bus' ] [ 'hsl(211, 50%, 85%)' ] and [ 'bike' ] [ '#dedae6' ] are too similar
 
 
 ------ protanopia ------
@@ -61,9 +59,7 @@ Zoom 6 [ 'airport' ] [ 'hsl(0, 0%, 75%)' ] and [ 'grass' ] [ '#bababa' ] are too
 
      type=line
 
-Zoom 16 [ 'bus' ] [ 'hsl(211, 50%, 85%)' ] and [
-  'road_casing_surface_all_,get,class,tertiary_!,coalesce,get,ramp,0,1_,coalesce,get,expressway,0,1'
-] [ '#dedae6' ] are too similar
+Zoom 16 [ 'bus' ] [ 'hsl(211, 50%, 85%)' ] and [ 'bike' ] [ '#dedae6' ] are too similar
 
 
 ------ tritanopia ------
@@ -74,9 +70,7 @@ Zoom 6 [ 'airport' ] [ 'hsl(0, 0%, 75%)' ] and [ 'grass' ] [ '#bababa' ] are too
 
      type=line
 
-Zoom 11 [ 'bus' ] [ '#FFDD00' ] and [
-  'road_casing_surface_all_,get,class,tertiary_!,coalesce,get,ramp,0,1_,coalesce,get,expressway,0,1'
-] [ '#FFDDDD' ] are too similar
+Zoom 11 [ 'bus' ] [ '#FFDD00' ] and [ 'bike' ] [ '#FFDDDD' ] are too similar
 ```
 
 Whats written to non-compliant pairs file
@@ -88,14 +82,7 @@ Whats written to non-compliant pairs file
       "6": [[["airport"], ["grass"]]]
     },
     "line": {
-      "17": [
-        [
-          ["bus"],
-          [
-            "road_casing_surface_all_,get,class,tertiary_!,coalesce,get,ramp,0,1_,coalesce,get,expressway,0,1"
-          ]
-        ]
-      ]
+      "17": [[["bus"], ["bike"]]]
     }
   },
   "deuteranopia": {
@@ -103,14 +90,7 @@ Whats written to non-compliant pairs file
       "6": [[["airport"], ["grass"]]]
     },
     "line": {
-      "16": [
-        [
-          ["bus"],
-          [
-            "road_casing_surface_all_,get,class,tertiary_!,coalesce,get,ramp,0,1_,coalesce,get,expressway,0,1"
-          ]
-        ]
-      ]
+      "16": [[["bus"], ["bike"]]]
     }
   },
   "protanopia": {
@@ -118,14 +98,7 @@ Whats written to non-compliant pairs file
       "6": [[["airport"], ["grass"]]]
     },
     "line": {
-      "16": [
-        [
-          ["bus"],
-          [
-            "road_casing_surface_all_,get,class,tertiary_!,coalesce,get,ramp,0,1_,coalesce,get,expressway,0,1"
-          ]
-        ]
-      ]
+      "16": [[["bus"], ["bike"]]]
     }
   },
   "tritanopia": {
@@ -133,14 +106,7 @@ Whats written to non-compliant pairs file
       "6": [[["airport"], ["grass"]]]
     },
     "line": {
-      "11": [
-        [
-          ["bus"],
-          [
-            "road_casing_surface_all_,get,class,tertiary_!,coalesce,get,ramp,0,1_,coalesce,get,expressway,0,1"
-          ]
-        ]
-      ]
+      "11": [[["bus"], ["bike"]]]
     }
   }
 }
@@ -198,9 +164,7 @@ Then the result written to terminal would no longer have the pairs configured to
 
      type=line
 
-Zoom 17 [ 'bus' ] [ 'hsl(211, 50%, 85%)' ] and [
-  'road_casing_surface_all_,get,class,tertiary_!,coalesce,get,ramp,0,1_,coalesce,get,expressway,0,1'
-] [ '#d3d9e8' ] are too similar
+Zoom 17 [ 'bus' ] [ 'hsl(211, 50%, 85%)' ] and [ 'bike' ] [ '#d3d9e8' ] are too similar
 
 
 ------ deuteranopia ------
@@ -209,9 +173,7 @@ Zoom 17 [ 'bus' ] [ 'hsl(211, 50%, 85%)' ] and [
 
      type=line
 
-Zoom 16 [ 'bus' ] [ 'hsl(211, 50%, 85%)' ] and [
-  'road_casing_surface_all_,get,class,tertiary_!,coalesce,get,ramp,0,1_,coalesce,get,expressway,0,1'
-] [ '#dedae6' ] are too similar
+Zoom 16 [ 'bus' ] [ 'hsl(211, 50%, 85%)' ] and [ 'bike' ] [ '#dedae6' ] are too similar
 
 
 ------ protanopia ------
@@ -220,9 +182,7 @@ Zoom 16 [ 'bus' ] [ 'hsl(211, 50%, 85%)' ] and [
 
      type=line
 
-Zoom 16 [ 'bus' ] [ 'hsl(211, 50%, 85%)' ] and [
-  'road_casing_surface_all_,get,class,tertiary_!,coalesce,get,ramp,0,1_,coalesce,get,expressway,0,1'
-] [ '#dedae6' ] are too similar
+Zoom 16 [ 'bus' ] [ 'hsl(211, 50%, 85%)' ] and [ 'bike' ] [ '#dedae6' ] are too similar
 
 
 ------ tritanopia ------
@@ -231,9 +191,7 @@ Zoom 16 [ 'bus' ] [ 'hsl(211, 50%, 85%)' ] and [
 
      type=line
 
-Zoom 11 [ 'bus' ] [ '#FFDD00' ] and [
-  'road_casing_surface_all_,get,class,tertiary_!,coalesce,get,ramp,0,1_,coalesce,get,expressway,0,1'
-] [ '#FFDDDD' ] are too similar
+Zoom 11 [ 'bus' ] [ '#FFDD00' ] and [ 'bike' ] [ '#FFDDDD' ] are too similar
 ```
 
 # Get adjusted colors via module
