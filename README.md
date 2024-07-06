@@ -15,7 +15,7 @@ Install extensions that would show colors specified in your document. For exampl
 
 Result in human readable format would be written to terminal when no outPutPath is specified
 
-A file would be written for non-compliant pairs stored in data structure 
+A file would be written to outPutPairPath for non-compliant pairs stored in data structure 
 ```sh
 color-unclasher filePath [outPutPath] --export-pairs-path outPutPairPath
 ```
@@ -27,51 +27,9 @@ Then answer the questions:
 ? Enter file path for non-compliant pairs to ignore: 
 ```
 
-Whats written to terminal
-```js
------- normal ------
+Whats written to filePath (suggested file format is .txt)
 
-     type=fill
-
-Zoom 6 [ 'airport' ] [ 'hsl(0, 0%, 75%)' ] and [ 'grass' ] [ '#bababa' ] are too similar
-
-     type=line
-
-Zoom 17 [ 'bus' ] [ 'hsl(211, 50%, 85%)' ] and [ 'bike' ] [ '#d3d9e8' ] are too similar
-
-
------- deuteranopia ------
-
-     type=fill
-
-Zoom 6 [ 'airport' ] [ 'hsl(0, 0%, 75%)' ] and [ 'grass' ] [ '#bababa' ] are too similar
-
-     type=line
-
-Zoom 16 [ 'bus' ] [ 'hsl(211, 50%, 85%)' ] and [ 'bike' ] [ '#dedae6' ] are too similar
-
-
------- protanopia ------
-
-     type=fill
-
-Zoom 6 [ 'airport' ] [ 'hsl(0, 0%, 75%)' ] and [ 'grass' ] [ '#bababa' ] are too similar
-
-     type=line
-
-Zoom 16 [ 'bus' ] [ 'hsl(211, 50%, 85%)' ] and [ 'bike' ] [ '#dedae6' ] are too similar
-
-
------- tritanopia ------
-
-     type=fill
-
-Zoom 6 [ 'airport' ] [ 'hsl(0, 0%, 75%)' ] and [ 'grass' ] [ '#bababa' ] are too similar
-
-     type=line
-
-Zoom 11 [ 'bus' ] [ '#FFDD00' ] and [ 'bike' ] [ '#FFDDDD' ] are too similar
-```
+![The non-compliant pairs with their IDs and color at a particular zoom level, organized by type=fill or type=line, and types of color blindness](.github/r1.png)
 
 Whats written to non-compliant pairs file
 
@@ -146,7 +104,7 @@ Lets say I am not worried about "airport" and "grass" having similar colors, the
 3. **Feed The File Back In When Analyzing Again**:
 
 ```sh
-color-unclasher filePath
+color-unclasher filePath outPutPath
 ```
 Then when answering  the questions:
 ```sh
@@ -155,44 +113,9 @@ Then when answering  the questions:
 ? Enter file path for non-compliant pairs to ignore: **path to the edited file**
 ```
 
-Then the result written to terminal would no longer have the pairs configured to ignore
+Then the result written to outPutPath would no longer have the pairs configured to ignore
 
-```js
------- normal ------
-
-     type=fill
-
-     type=line
-
-Zoom 17 [ 'bus' ] [ 'hsl(211, 50%, 85%)' ] and [ 'bike' ] [ '#d3d9e8' ] are too similar
-
-
------- deuteranopia ------
-
-     type=fill
-
-     type=line
-
-Zoom 16 [ 'bus' ] [ 'hsl(211, 50%, 85%)' ] and [ 'bike' ] [ '#dedae6' ] are too similar
-
-
------- protanopia ------
-
-     type=fill
-
-     type=line
-
-Zoom 16 [ 'bus' ] [ 'hsl(211, 50%, 85%)' ] and [ 'bike' ] [ '#dedae6' ] are too similar
-
-
------- tritanopia ------
-
-     type=fill
-
-     type=line
-
-Zoom 11 [ 'bus' ] [ '#FFDD00' ] and [ 'bike' ] [ '#FFDDDD' ] are too similar
-```
+![The result is a lot shorter than before](.github/r2.png)
 
 # Get adjusted colors via module
 
