@@ -11,11 +11,8 @@ The exported file for non-compliant pairs in a specific data structure could be 
 Install extensions that would show colors specified in your document. For example, Color Highlight in VS Code.
 
 # Example Workflow
-1.  **Run Analysis In Terminal with the Optional Flag --export-pairs-path Followed By a File Path**
+1.  **Run Analysis In Terminal with the Optional Flag --export-pairs-path Followed By a File Path**: Result in human readable format would be written to outPutPath. If outPutPath is not specified, it would be written to terminal. Another file would be written to outPutPairPath for non-compliant pairs stored in a specific data structure.
 
-Result in human readable format would be written to terminal when no outPutPath is specified
-
-A file would be written to outPutPairPath for non-compliant pairs stored in data structure 
 ```sh
 color-unclasher filePath [outPutPath] --export-pairs-path outPutPairPath
 ```
@@ -70,8 +67,8 @@ Whats written to non-compliant pairs file
 }
 ```
 
-2. **Edit Non-compliant Pairs File For Pairs To Ignore**:
-Lets say I am not worried about "airport" and "grass" having similar colors, then I would **leave** pairs with "airport" and "grass" in the file, and delete the rest. The edited file should look like 
+2. **Edit Non-compliant Pairs File For Pairs To Ignore**: Let's say I am not worried about "airport" and "grass" having similar colors, then I would **leave** pairs with "airport" and "grass" in the file, and delete the rest. The edited file should look like:
+
 ```js
 {
   "normal": {
@@ -101,12 +98,12 @@ Lets say I am not worried about "airport" and "grass" having similar colors, the
 }
 ```
 
-3. **Feed The File Back In When Analyzing Again**:
+3. **Feed The File Back In When Analyzing Again**: run
 
 ```sh
 color-unclasher filePath outPutPath
 ```
-Then when answering  the questions:
+Then when answer the questions:
 ```sh
 ? Enter the minimum DeltaE for enough difference: 5.5
 ? Enter the minimum and maximum zoom level (comma-separated): 0,22
