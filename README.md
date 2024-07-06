@@ -29,7 +29,7 @@ Then answer the questions:
 
 Whats written to filePath (suggested file format is .txt)
 
-![The non-compliant pairs with their IDs and color at a particular zoom level, organized by type=fill or type=line, and types of color blindness](.github/r1_n.png)
+![The non-compliant pairs with their IDs and color at a particular zoom level, organized by type=fill or type=line, and types of color blindness](.github/r1.png)
 
 Whats written to non-compliant pairs file
 
