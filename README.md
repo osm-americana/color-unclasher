@@ -115,7 +115,7 @@ Then when answering  the questions:
 
 Then the result written to outPutPath would no longer have the pairs configured to ignore
 
-![The result is a lot shorter than before](.github/r2.png)
+![The result is a lot shorter than before](.github/r2_n.png)
 
 # Get adjusted colors via module
 
