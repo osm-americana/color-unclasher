@@ -29,7 +29,7 @@ Then answer the questions:
 
 Whats written to filePath (suggested file format is .txt)
 
-![The non-compliant pairs with their IDs and color at a particular zoom level, organized by type=fill or type=line, and types of color blindness](.github/r1.png)
+![The non-compliant pairs with their IDs and color at a particular zoom level, organized by type=fill or type=line, and types of color blindness](.github/r1_n.png)
 
 Whats written to non-compliant pairs file
 
@@ -115,7 +115,7 @@ Then when answering  the questions:
 
 Then the result written to outPutPath would no longer have the pairs configured to ignore
 
-![The result is a lot shorter than before](.github/r2_n.png)
+![The result is a lot shorter than before](.github/r2.png)
 
 # Get adjusted colors via module
 
