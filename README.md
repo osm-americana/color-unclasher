@@ -6,6 +6,32 @@ The result could be in human readable format (written to terminal or a file) or 
 
 The exported file for non-compliant pairs in a specific data structure could be used to specify pairs to ignore in future analyses.
 
+# For people that want to help test it out
+First of all, thank you so much! The workflow is suggested bellow and it would be very helpful if you can read through this README and tell me if there are anything vague or needs to be changed/added. Reach me through slack! 
+
+If you would like to, run the packge! For a simple sample style, use case.json in the test folder, but you could also use your own style specification! Put it in the test folder and run the package. Things might not work perfelectly since there are expressions that are not yet supported.
+
+
+Installation:
+
+```sh
+git clone https://github.com/osm-americana/color-unclasher.git
+cd color-unclasher
+cd package
+npm install
+npm link color-unclasher
+cd ..
+cd test
+npm link color-unclasher
+```
+
+Supports:
+-  steps
+-  stops
+-  interpolate
+-  interpolate with one layer of match
+-  case
+
 # Supported And Not Supported Expressions
 Supports:
 -  steps
@@ -18,6 +44,8 @@ Not supported:
 - nested match
 - in
 
+...
+  
 # Recommendation
 
 Install extensions that would show colors specified in your document. For example, Color Highlight in VS Code.
