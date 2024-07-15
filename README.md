@@ -11,10 +11,10 @@ The exported file for non-compliant pairs in a specific data structure could be 
 Install extensions that would show colors specified in your document. For example, Color Highlight in VS Code.
 
 # Example Workflow
-1.  **Run Analysis In Terminal with the Optional Flag --export-pairs-path Followed By a File Path**: Result in human readable format would be written to outPutPath. If outPutPath is not specified, it would be written to terminal. Another file would be written to outPutPairPath for non-compliant pairs stored in a specific data structure.
+1.  **Run Analysis In Terminal with the Optional Flag --export-pairs-path Followed By a File Path**: Result in human readable format could be written to an optional file path (result.json in this example). If the path is not specified, the result will be written to terminal. Another file (output.txt in this example) could be created for non-compliant pairs stored in a specific data structure.
 
 ```sh
-color-unclasher filePath [outPutPath] --export-pairs-path outPutPairPath
+color-unclasher styles.json result.txt --export-pairs-path output.json
 ```
 
 Then answer the questions:
@@ -24,11 +24,11 @@ Then answer the questions:
 ? Enter file path for non-compliant pairs to ignore: 
 ```
 
-Whats written to filePath (suggested file format is .txt)
+Whats written to result.txt
 
 ![The non-compliant pairs with their IDs and color at a particular zoom level, organized by type=fill or type=line, and types of color blindness](.github/r1.png)
 
-Whats written to non-compliant pairs file
+Whats written to output.json
 
 ```js
 {
@@ -67,7 +67,7 @@ Whats written to non-compliant pairs file
 }
 ```
 
-2. **Edit Non-compliant Pairs File For Pairs To Ignore**: Let's say I am not worried about "airport" and "grass" having similar colors, then I would **leave** pairs with "airport" and "grass" in the file, and delete the rest. The edited file should look like:
+2. **Edit Non-compliant Pairs File For Pairs To Ignore**: Let's say I am not worried about "airport" and "grass" having similar colors, then I would **leave** pairs with "airport" and "grass" in the file, and delete the rest. Rename the file to pairsToIgnore.txt, then the file should look like:
 
 ```js
 {
@@ -101,13 +101,13 @@ Whats written to non-compliant pairs file
 3. **Feed The File Back In When Analyzing Again**: run
 
 ```sh
-color-unclasher filePath outPutPath
+color-unclasher style.json result.txt
 ```
 Then when answer the questions:
 ```sh
 ? Enter the minimum DeltaE for enough difference: 5.5
 ? Enter the minimum and maximum zoom level (comma-separated): 0,22
-? Enter file path for non-compliant pairs to ignore: **path to the edited file**
+? Enter file path for non-compliant pairs to ignore: pairsToIgnore.txt
 ```
 
 Then the result written to outPutPath would no longer have the pairs configured to ignore
