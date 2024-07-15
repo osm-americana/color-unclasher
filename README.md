@@ -9,7 +9,7 @@ The exported file for non-compliant pairs in a specific data structure could be 
 # For people that want to help test it out
 First of all, thank you so much! The workflow is suggested bellow and it would be very helpful if you can read through this README and tell me if there are anything vague or needs to be changed/added. Reach me through slack! 
 
-If you would like to, run the packge! For a simple sample style, use case.json in the test folder, but you could also use your own style specification! Put it in the test folder and run the package. Things might not work perfelectly since there are expressions that are not yet supported.
+If you would like to, run the packge! For simple test files, use case.json or simple.json in the test folder, but you could also use your own style specification! Put it in the test folder and run the package. Things might not work perfelectly since there are expressions that are not yet supported.
 
 
 Installation:
