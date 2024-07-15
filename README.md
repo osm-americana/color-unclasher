@@ -10,6 +10,9 @@ The exported file for non-compliant pairs in a specific data structure could be 
 
 Install extensions that would show colors specified in your document. For example, Color Highlight in VS Code.
 
+# Example Workflow Through Diagram
+![Go down for text based explanations.](.github/diagram.png)
+
 # Example Workflow
 1.  **Run Analysis In Terminal with the Optional Flag --export-pairs-path Followed By a File Path**: Result in human readable format could be written to an optional file path (result.json in this example). If the path is not specified, the result will be written to terminal. Another file (output.txt in this example) could be created for non-compliant pairs stored in a specific data structure.
 
