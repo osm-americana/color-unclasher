@@ -67,7 +67,7 @@ Whats written to output.json
 }
 ```
 
-2. **Edit Non-compliant Pairs File For Pairs To Ignore**: Let's say I am not worried about "airport" and "grass" having similar colors, then I would **leave** pairs with "airport" and "grass" in the file, and delete the rest. Rename the file to pairsToIgnore.txt, then the file should look like:
+2. **Edit output.json To Specify Pairs To Ignore In Future Analyzes**: Let's say I am not worried about "airport" and "grass" having similar colors, then I would **leave** pairs with "airport" and "grass" in output.json, and delete the rest. output.json should now look like:
 
 ```js
 {
@@ -98,19 +98,19 @@ Whats written to output.json
 }
 ```
 
-3. **Feed The File Back In When Analyzing Again**: run
+3. **Analyze Again And Feed output.json Back In When Prompted**: run
 
 ```sh
 color-unclasher style.json result.txt
 ```
-Then when answer the questions:
+Then in the third question, provide the path to output.json
 ```sh
 ? Enter the minimum DeltaE for enough difference: 5.5
 ? Enter the minimum and maximum zoom level (comma-separated): 0,22
-? Enter file path for non-compliant pairs to ignore: pairsToIgnore.txt
+? Enter file path for non-compliant pairs to ignore: output.json
 ```
 
-Then the result written to outPutPath would no longer have the pairs configured to ignore
+Then the result written to result.txt would no longer have the pairs configured to ignore
 
 ![The result is a lot shorter than before](.github/r2.png)
 
