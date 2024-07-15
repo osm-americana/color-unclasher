@@ -25,13 +25,6 @@ cd test
 npm link color-unclasher
 ```
 
-Supports:
--  steps
--  stops
--  interpolate
--  interpolate with one layer of match
--  case
-
 # Supported And Not Supported Expressions
 Supports:
 -  steps
