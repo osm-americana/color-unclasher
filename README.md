@@ -1,19 +1,31 @@
 # Color-Unclasher
 
-Color-Unclasher is designed to help developers making their Maplibre style specifications more accessible to users with color blindness. This tool analyzes color combinations within a style specification and reports any non-compliant pairs. 
+Designed to help developers make their Maplibre styles more accessible to users with color blindness! This tool analyzes color combinations within a style specification and reports any non-compliant pairs, based on if the color of two layers at the same zoom level have enough DeltaE difference.
 
 The result could be in human readable format (written to terminal or a file) or just data structures exported to another file. 
 
-The exported file for non-compliant pairs in a specific data structure could be used to specify pairs to ignore in future analyses, by providing its filename when prompted "Enter file path for non-compliant pairs to ignore" in terminal.
+The exported file for non-compliant pairs in a specific data structure could be used to specify pairs to ignore in future analyses.
+
+# Supported And Not Supported Expressions
+Supports:
+-  steps
+-  stops
+-  interpolate
+-  interpolate with one layer of match
+-  case
+
+Not supported:
+- nested match
+- in
 
 # Recommendation
 
 Install extensions that would show colors specified in your document. For example, Color Highlight in VS Code.
 
-# Example Workflow Through Diagram
+# Example Workflow Explained w/ Diagram
 ![Go down for text based explanations.](.github/d.png)
 
-# Example Workflow
+# Example Workflow Explained w/ Text
 1.  **Run Analysis In Terminal with the Optional Flag --export-pairs-path Followed By a File Path**: Result in human readable format could be written to an optional file path (result.json in this example). If the path is not specified, the result will be written to terminal. Another file (output.txt in this example) could be created for non-compliant pairs stored in a specific data structure.
 
 ```sh
