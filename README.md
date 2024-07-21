@@ -8,10 +8,11 @@ The exported file for non-compliant pairs in a specific data structure could be 
 
 # Background Information
 
-`Color-blindness considered in the project`
+`Color perceptions considered in the project`
 
 | Name | Type  | Cause |
 | :------------ |:---------------| :---------------|
+| Normal Vision | No color blindness | Has all red, green, and blue cones |
 | Protanopia | Red-Green blindness | No red cone |
 | Deuteranopia | Red-Green blindness | No green cone |
 | Trianopia | Blue-Yellow blindness | No blue cone |
