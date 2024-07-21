@@ -42,11 +42,11 @@ Not supported:
   
 # Recommendations
 
-Install extensions that would show colors specified in your document. For example, [Color Highlight](https://marketplace.visualstudio.com/items?itemName=naumovs.color-highlight) in VS Code.
+1.  Install extensions that would show colors specified in your document. For example, [Color Highlight](https://marketplace.visualstudio.com/items?itemName=naumovs.color-highlight) in VS Code.
 
-If you want to experiement with what minimum DeltaE you want to use, or check the DeltaE, color contrast, and how two colors would look with different types of color blindness, go to https://leonardocolor.io/tools.html. You can use ![#475C5C](https://placehold.co/15x15/475C5C/475C5C.png) `#475C5C` and ![#515062](https://placehold.co/10x15/515062/515062.png) `#515062` as an example. They have DeltaE of 5.56 for Deuteranopia, 7.95 for Protanopia, and 6.46 for Tritanopia.
+2.  If you want to experiement with what minimum DeltaE you want to use, or check the DeltaE, color contrast, and how two colors would look with different types of color blindness, go to https://leonardocolor.io/tools.html. You can use ![#475C5C](https://placehold.co/15x15/475C5C/475C5C.png) `#475C5C` and ![#515062](https://placehold.co/10x15/515062/515062.png) `#515062` as an example. They have DeltaE of 5.56 for Deuteranopia, 7.95 for Protanopia, and 6.46 for Tritanopia.
 
-To check how a group of color looks for people with different types of color-blindness, go to https://color.adobe.com/create/color-accessibility and select Color Blind Safe on the left column.
+3.  To check how a group of color looks for people with different types of color-blindness, go to https://color.adobe.com/create/color-accessibility and select Color Blind Safe on the left column.
 
 # Usage and flags
 
