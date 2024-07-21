@@ -1,6 +1,6 @@
 # Color-Unclasher
 
-Designed to help developers make their Maplibre styles more accessible to users with color blindness! This tool analyzes color combinations within a style specification and reports any non-compliant pairs. Compliancy is based on if the colors of two layers at the same zoom level, after being transformed into what they would look like with different types of color blindness, have enough DeltaE difference.
+Designed to help developers make their Maplibre styles more accessible to users with color blindness! This tool analyzes color combinations within a style specification and reports any non-compliant pairs. Compliance is determined by checking if the colors of two layers at the same zoom level, when transformed to simulate different types of color blindness, have a sufficient DeltaE difference.
 
 The result could be in human readable format (written to terminal or a file) or just data structures exported to another file. 
 
