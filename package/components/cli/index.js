@@ -1,27 +1,17 @@
-import getOptions from "./utils/getOptions.js";
 import extractStyle from "./utils/extractStyle.js";
 import processStyles from "./utils/processStyles.js";
 import outPutAnalysis from "./utils/outPutAnalysis.js";
 import { readFile, isValidStructure } from "./utils/IO.js";
 
-import fs from "fs";
-
-export default async function commandLine(filePath, outPutPath, exportPairsPath) {
-  const options = await getOptions();
-
-  if (options.minZoomLevel > options.maxZoomLevel) {
-    throw new Error("maxZoom must be greater than or equal to minZoom");
-  }
-
-  if (options.ignorePairsFile) {
-    // make sure the non-compliant pairs file exists
-    fs.access(options.ignorePairsFile, fs.F_OK, (err) => {
-      if (err) {
-        console.error("Error reading non-compliant pairs file:", err);
-        process.exit(1);
-      }
-    });
-  }
+export default async function commandLine(
+  filePath,
+  outPutPath,
+  exportPairsPath,
+  minZoom,
+  maxZoom,
+  parisToIgnorePath,
+  minDeltaE
+) {
 
   const layerTypes = ["fill", "line"];
   const colorBlindTypes = [
@@ -36,14 +26,14 @@ export default async function commandLine(filePath, outPutPath, exportPairsPath)
     layerTypes,
     styles,
     colorBlindTypes,
-    options.minMaxZoom,
-    options.targetDeltaE
+    [minZoom, maxZoom],
+    minDeltaE
   );
 
   let nonCompliantPairsToIgnore = null;
 
-  if (options.ignorePairsFile) {     
-    nonCompliantPairsToIgnore = await readFile(options.ignorePairsFile);
+  if (parisToIgnorePath) {
+    nonCompliantPairsToIgnore = await readFile(parisToIgnorePath);
 
     try {
       isValidStructure(nonCompliantPairsToIgnore, colorBlindTypes, layerTypes);
