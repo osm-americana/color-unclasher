@@ -43,21 +43,29 @@ Not supported:
 
 Install extensions that would show colors specified in your document. For example, Color Highlight in VS Code.
 
-# Example Workflow Explained w/ Diagram
-![Go down for text based explanations.](.github/d.png)
+# Usage and flags
 
-# Example Workflow Explained w/ Text
-1.  **Run Analysis In Terminal with the Optional Flag --export-pairs-path Followed By a File Path**: Result in human readable format could be written to an optional file path (result.json in this example). If the path is not specified, the result will be written to terminal. Another file (output.txt in this example) could be created for non-compliant pairs stored in a specific data structure.
+In terminal, provide the path to your style specification. If you would like to store the human readable analyzes result, enter a file path. Or else, result would be written to terminal.
+
+```sh
+color-unclasher styleSpecPath [analyzeResultFilePath]
+```
+
+To override default values or declare path to export to or import from, use the following flags:
+
+| Flag  | Default Value | Explanation |
+| :------------ |:---------------:| :-----:|
+| --export-pairs-path     | null | The path the non-compliant pairs would be exported to |
+| --min-zoom      | 0        |  The minimum zoom level |
+| --max-zoom | 22       |   The maximum zoom level |
+| --min-deltaE | 5.5       |   The minimum DeltaE for a compliant pair |
+| --pairs-to-ignore-path| null       |  The path to import non-compliant pairs to ignore |
+
+# Example Workflow
+1.  **Run analysis in terminal with the flag --export-pairs-path**: Result in human readable format would be written result.txt. output.json would be created for non-compliant pairs stored in a specific data structure.
 
 ```sh
 color-unclasher styles.json result.txt --export-pairs-path output.json
-```
-
-Then answer the questions:
-```sh
-? Enter the minimum DeltaE for enough difference: 5.5
-? Enter the minimum and maximum zoom level (comma-separated): 0,22
-? Enter file path for non-compliant pairs to ignore: 
 ```
 
 Whats written to result.txt
@@ -103,7 +111,7 @@ Whats written to output.json
 }
 ```
 
-2. **Edit output.json To Specify Pairs To Ignore In Future Analyzes**: Let's say I am not worried about "airport" and "grass" having similar colors, then I would **leave** pairs with "airport" and "grass" in output.json, and delete the rest. output.json should now look like:
+2. **Edit output.json to specify pairs to ignore in future analyzes**: Let's say I am not worried about "airport" and "grass" having similar colors, then I would **leave** pairs with "airport" and "grass" in output.json, and delete the rest. output.json should now look like:
 
 ```js
 {
@@ -134,16 +142,12 @@ Whats written to output.json
 }
 ```
 
-3. **Analyze Again And Feed output.json Back In When Prompted**: run
+Run analysis in terminal with the flag --export-pairs-path**
+
+3. **Analyze again and with flag --export-pairs-path followed by output.json**:
 
 ```sh
-color-unclasher style.json result.txt
-```
-Then in the third question, provide the path to output.json
-```sh
-? Enter the minimum DeltaE for enough difference: 5.5
-? Enter the minimum and maximum zoom level (comma-separated): 0,22
-? Enter file path for non-compliant pairs to ignore: output.json
+color-unclasher style.json result.txt --pairs-to-ignore-path output.json
 ```
 
 Then the result written to result.txt would no longer have the pairs configured to ignore
