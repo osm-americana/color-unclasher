@@ -6,7 +6,7 @@ The result could be in human readable format (written to terminal or a file) or 
 
 The exported file for non-compliant pairs in a specific data structure could be used to specify pairs to ignore in future analyses.
 
-# Background Information
+# Background information
 
 `Color perceptions considered in the project`
 
@@ -27,7 +27,7 @@ DeltaE (CIE 2000) is a metric for how the human eye percieves color difference, 
 
 Color contrast ratio, based on the relative brightness of the RGB values, is mostly used for getting the contrast between a peice of text and its background color, which the former would hold significantly less space than a tile on a map. ![#475C5C](https://placehold.co/15x15/475C5C/475C5C.png) `#475C5C` and ![#515062](https://placehold.co/10x15/515062/515062.png) `#515062` would fail for color contrast, but they have enough difference for two adjacent tiles on a map. Read more about DeltaE [here](https://techkonusa.com/demystifying-the-cie-%CE%B4e-2000-formula/).
 
-# Supported And Not Supported Expressions
+# Supported and unsupported expressions
 Supports:
 -  steps
 -  stops
@@ -67,7 +67,7 @@ To override default values or declare path to export or import data from, use th
 | --min-deltaE | 5.5       |   The minimum DeltaE for a compliant pair |
 | --pairs-to-ignore-path| null       |  The path to import non-compliant pairs to ignore |
 
-# Example Workflow
+# Example workflow
 1.  **Run analysis in terminal with the flag --export-pairs-path**: Result in human readable format would be written to result.txt. output.json would be created for non-compliant pairs stored in a specific data structure.
 
 ```sh
@@ -117,7 +117,7 @@ Whats written to output.json
 }
 ```
 
-2. **Edit output.json to specify pairs to ignore in future analyzes**: Let's say I am not worried about "airport" and "grass" having similar colors, then I would **leave** pairs with "airport" and "grass" in output.json, and delete the rest. output.json should now look like:
+2. **Edit output.json to specify pairs to ignore in future analyses**: Let's say I am not worried about "airport" and "grass" having similar colors, then I would **leave** pairs with "airport" and "grass" in output.json, and delete the rest. output.json should now look like:
 
 ```js
 {
