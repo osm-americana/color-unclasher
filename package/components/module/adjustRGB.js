@@ -111,8 +111,10 @@ function convertToMode(color, mode) {
       return colorBlind.protanopia(color);
     case "tritanopia":
       return colorBlind.tritanopia(color);
+    case "normal":
+      return color;
     default:
-      console.error("Unsupported color simulation");
+      console.error("Unsupported color simulation", mode, color);
       process.exit(1);
   }
 }

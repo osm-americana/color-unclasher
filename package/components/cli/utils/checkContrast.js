@@ -19,7 +19,7 @@ export default function checkContrastBetweenPairs(colorBlindTypes, uniqueColors,
   return nonCompliantPairsByType;
 }
 
-function checkContrast(colors, mode, threshHold) {
+export function checkContrast(colors, mode, threshHold) {
   let nonCompliantPairs = [];
 
   for (let i = 0; i < colors.length; i++) {
@@ -59,7 +59,7 @@ function checkEnoughContrast(color1, color2, mode, threshHold = 5.5) {
       chromaColor2 = color2;
       break;
     default:
-      console.error("Unsupported color simulation");
+      console.error("Unsupported color simulation", mode);
       process.exit(1);
   }
 

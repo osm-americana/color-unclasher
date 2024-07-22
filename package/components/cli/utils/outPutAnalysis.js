@@ -1,5 +1,6 @@
 import { checkPairExist } from "./string.js";
 import { writeFile } from "./IO.js";
+import adjustColor from "./../../module/adjustColor.js";
 
 export default async function outPutAnalysis(
   resultArray,
@@ -54,7 +55,8 @@ export default async function outPutAnalysis(
         resultArray[2][0],
         buildExportPairs(exportPairsPath),
         exportPairs[type].fill,
-        nonCompliantPairsToIgnore?.[type]?.["fill"]
+        nonCompliantPairsToIgnore?.[type]?.["fill"],
+        type
       );
       console.log("\n     type=line\n");
       writeResultToTerminal(
@@ -62,7 +64,8 @@ export default async function outPutAnalysis(
         resultArray[2][1],
         buildExportPairs(exportPairsPath),
         exportPairs[type].line,
-        nonCompliantPairsToIgnore?.[type]?.["line"]
+        nonCompliantPairsToIgnore?.[type]?.["line"],
+        type
       );
       console.log("\n");
     }
@@ -104,10 +107,13 @@ function writeResultToTerminal(
   colorToLayerIDByZoomLevel,
   buildExportPairs,
   exportPairsCurrType,
-  nonCompliantPairsToIgnore
+  nonCompliantPairsToIgnore,
+  type
 ) {
   Object.keys(nonCompliantPairs).forEach((key) => {
     const pairs = nonCompliantPairs[key];
+    const colorsAtCurrZoom = Object.keys(colorToLayerIDByZoomLevel[key]);
+    const indexOfPairsToIgnore = [];
 
     pairs.map((p) => {
       const color1 = p[0];
@@ -117,9 +123,14 @@ function writeResultToTerminal(
 
       // if the pair is configured to be ignored, then don't output
       if (
-        nonCompliantPairsToIgnore && nonCompliantPairsToIgnore[key] &&
+        nonCompliantPairsToIgnore &&
+        nonCompliantPairsToIgnore[key] &&
         checkPairExist(nonCompliantPairsToIgnore[key], name1[0], name2[0])
       ) {
+        indexOfPairsToIgnore.push([
+          colorsAtCurrZoom.indexOf(color1),
+          colorsAtCurrZoom.indexOf(color2),
+        ]);
         return null;
       }
 
@@ -139,6 +150,10 @@ function writeResultToTerminal(
          so we don't want to mark this pair as need more contrast */
       if (Array.isArray(name1) && Array.isArray(name2)) {
         if (name1[0][0] === name2[0][0]) {
+          indexOfPairsToIgnore.push([
+            colorsAtCurrZoom.indexOf(color1),
+            colorsAtCurrZoom.indexOf(color2),
+          ]);
           return null;
         }
       }
@@ -155,6 +170,26 @@ function writeResultToTerminal(
         "are too similar"
       );
     });
+
+    const result = adjustColor(
+      colorsAtCurrZoom,
+      indexOfPairsToIgnore,
+      type,
+      5.5
+    );
+    if (result.length > 0) {
+      const map1 = new Map();
+      console.log("\n");
+      const keys = Object.keys(colorToLayerIDByZoomLevel[key]);
+      result.map((r) => {
+        const condition = colorToLayerIDByZoomLevel[key][keys[r[0]]];
+        map1.set(condition, [r[2]]);
+      });
+
+      for (const key of map1.keys()) {
+        console.log("   Change", key, "to", map1.get(key));
+      }
+    }
   });
 }
 
