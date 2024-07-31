@@ -81,6 +81,10 @@ function getLayerColorsAtZooms(
   const interpolationType = {};
   let interpolationColorSpace = 'rgb';
 
+  if (fillColor === undefined) {
+    throw new Error('Error parsing paint. Could be a fill-color property has been assigned to a layer with type=line.');
+  }
+
   // Interpolate
   if (
     Array.isArray(fillColor) &&

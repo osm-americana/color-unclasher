@@ -1,7 +1,7 @@
 import chroma from "chroma-js";
 import adjustRGB from "./adjustRGB.js";
 import adjustHSL from "./adjustHSL.js";
-import { getColorModel } from "../utils/color.js";
+import { getColorModel, convertToMode } from "../utils/color.js";
 import { checkContrast } from "../cli/utils/checkContrast.js";
 
 function testGroupDeltaE(colors, index, mode, targetDeltaE = 5.5) {
@@ -49,8 +49,8 @@ export default function adjustColorsGroup(
     changesMade = false;
     for (let i = 0; i < adjustedColors.length; i++) {
       for (let j = i + 1; j < adjustedColors.length; j++) {
-        let color1 = adjustedColors[i];
-        let color2 = adjustedColors[j];
+        let color1 = convertToMode(adjustedColors[i], mode);
+        let color2 = convertToMode(adjustedColors[j], mode);
         if (!isPairInParameter(i, j, ignoredIndex)) {
           let deltaE = chroma.deltaE(color1, color2);
 
@@ -63,28 +63,35 @@ export default function adjustColorsGroup(
               result = adjustRGB(color1, color2, mode, targetDeltaE);
             }
 
-            let madeIt = false;
-            let madeColor;
-            const keys = Object.keys(result);
+            if (typeof result === 'object') {
+              let madeIt = false;
+              let madeColor;
+              const keys = Object.keys(result);
 
-            for (let l = 0; l < keys.length; l++) {
-              if (result[keys[l]] !== "----") {
-                const copy = adjustedColors;
-                copy[j] = result[keys[l]];
-                if (testGroupDeltaE(copy, j, mode, targetDeltaE)) {
-                  madeIt = true;
-                  madeColor = result[keys[l]];
-                  changedStuff.push([j, color2, madeColor, result]);
-                  break;
+              for (let l = 0; l < keys.length; l++) {
+                if (result[keys[l]] !== "----") {
+                  const copy = adjustedColors;
+                  copy[j] = result[keys[l]];
+                  if (testGroupDeltaE(copy, j, mode, targetDeltaE)) {
+                    madeIt = true;
+                    madeColor = result[keys[l]];
+                    changedStuff.push([j, color2, madeColor, result]);
+                    break;
+                  }
                 }
               }
-            }
 
-            if (!madeIt) {
-              changedStuff.push([j, color2, 'no advised color available', result]);
-            }
+              if (!madeIt) {
+                changedStuff.push([
+                  j,
+                  color2,
+                  "no advised color available",
+                  result,
+                ]);
+              }
 
-            changesMade = true;
+              changesMade = true;
+            }
           }
         }
       }

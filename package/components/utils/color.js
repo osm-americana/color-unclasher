@@ -5,6 +5,7 @@ import {
 } from "@maplibre/maplibre-gl-style-spec";
 import tinycolor from "tinycolor2";
 import chroma from "chroma-js";
+import colorBlind from "color-blind";
 
 // TODO: need testing
 export function convertToTargetFormat(adjustedColor, color2) {
@@ -81,6 +82,22 @@ export function parseHSL(hslString) {
     lightness: parseFloat(lightness),
     alpha: alpha !== undefined ? parseFloat(alpha) : 1, // Default to 1 if alpha is not specified
   };
+}
+
+export function convertToMode(color, mode) {
+  switch (mode) {
+    case "deuteranopia":
+      return colorBlind.deuteranopia(color);
+    case "protanopia":
+      return colorBlind.protanopia(color);
+    case "tritanopia":
+      return colorBlind.tritanopia(color);
+    case "normal":
+      return color;
+    default:
+      console.error("Unsupported color simulation", mode, color);
+      process.exit(1);
+  }
 }
 
 export function getInterpolatedColor(

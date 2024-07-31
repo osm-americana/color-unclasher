@@ -148,7 +148,7 @@ function writeResultToTerminal(
          ]
          would result in two colors depending on the cases
          so we don't want to mark this pair as need more contrast */
-      if (Array.isArray(name1) && Array.isArray(name2)) {
+      if (Array.isArray(name1[0]) && Array.isArray(name2[0])) {
         if (name1[0][0] === name2[0][0]) {
           indexOfPairsToIgnore.push([
             colorsAtCurrZoom.indexOf(color1),
@@ -179,7 +179,6 @@ function writeResultToTerminal(
     );
     if (result.length > 0) {
       const map1 = new Map();
-      console.log("\n");
       const keys = Object.keys(colorToLayerIDByZoomLevel[key]);
       result.map((r) => {
         const condition = colorToLayerIDByZoomLevel[key][keys[r[0]]];
@@ -187,7 +186,7 @@ function writeResultToTerminal(
       });
 
       for (const key of map1.keys()) {
-        console.log("   Change", key, "to", map1.get(key));
+        console.log("   Change", key, "to", map1.get(key), '\n');
       }
     }
   });

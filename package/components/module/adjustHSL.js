@@ -1,6 +1,5 @@
-import colorBlind from "color-blind";
 import chroma from "chroma-js";
-import { parseHSL } from "../utils/color.js";
+import { parseHSL, convertToMode } from "../utils/color.js";
 import tinycolor from "tinycolor2";
 
 export default function adjustHSL(color1, color2, mode, threshHold = 7) {
@@ -83,21 +82,5 @@ function adjustColorComponent(
     ) {
       return "----";
     }
-  }
-}
-
-function convertToMode(color, mode) {
-  switch (mode) {
-    case "deuteranopia":
-      return colorBlind.deuteranopia(color);
-    case "protanopia":
-      return colorBlind.protanopia(color);
-    case "tritanopia":
-      return colorBlind.tritanopia(color);
-    case "normal":
-      return color;
-    default:
-      console.error("Unsupported color simulation", mode, color);
-      process.exit(1);
   }
 }

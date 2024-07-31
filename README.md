@@ -158,6 +158,14 @@ Then the result written to result.txt would no longer have the pairs configured 
 
 ![The result is a lot shorter than before](.github/r2.png)
 
+4. **Get suggested change of color with --get-suggest**:
+
+```sh
+color-unclasher style.json result.txt --pairs-to-ignore-path output.json --get-suggest true
+```
+
+![Get suggestion on change of color](.github/r3.png)
+
 # Get adjusted colors via module
 
 ```js
