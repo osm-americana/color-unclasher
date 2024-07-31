@@ -190,8 +190,8 @@ for more information.
 
 # Get adjusted colors
 
-Two exported functions, adjustRGB and adjustHSL are available to get suggested 
-colors on your own. They both suggest colors by increasing or decreasing red, 
+The automatic suggestions mentioned in example workflow uses two underlying functions, 
+adjustRGB and adjustHSL. They both suggest colors by increasing or decreasing red, 
 green, or blue, or hue, saturation, and lightness at a time. The returned
 object will contain suggestions that meet the min DeltaE threshold. 
 
@@ -200,7 +200,8 @@ with other existing colors will start with the first color in result, which woul
 be color with red increase for RGB colors, and hue increase for HSL colors. Therefore,
 automatic suggestions have a bias for these two kind of colors.
 
-If you would like to view all suggested colors to pick a color on your own, in a JS file, use it as the following.
+These two functions are also available to be used individually. If you would like to 
+view all suggested colors to pick a color on your own, in a JS file, use it as the following.
 
 ```js
 import ColorUnclasher from "color-unclasher";
@@ -210,30 +211,21 @@ const color2 = "#ff8375"; // have a deltaE of 2.81 with color1
 const mode = 'deuteranopia'; // one of protanopia, deuteranopia, and trianopia
 const minDeltaE = 7; // defaulted to 7
 
-/*
-  Result:
-  {
-    red_increase: '----', // means no possible result
-    red_decrease: '#da8375',
-    green_increase: '#ffa875',
-    green_decrease: '#ff5e75',
-    blue_increase: '#ff8387',
-    blue_decrease: '#ff833a'
-  }
-*/
-const newColors = ColorUnclasher.adjustRGB(color1, color2, mode, minDeltaE);
+const newColors = ColorUnclasher.adjustRGB(color1, color2, mode, minDeltaE); // result in an object
 ```
 
 color1 = `#a4a95b` ![#a4a95b](https://placehold.co/15x15/a4a95b/a4a95b.png)  color2 = `#ff8375` ![#ff8375](https://placehold.co/15x15/ff8375/ff8375.png)
 
-red_increase: '----',
+Result:
 
-red_decrease: '#da8375' ![#da8375](https://placehold.co/15x15/da8375/da8375.png),
+red_increase: `----`,
 
-green_increase: '#ffa875' ![#ffa875](https://placehold.co/15x15/ffa875/ffa875.png),
+red_decrease: `#da8375` ![#da8375](https://placehold.co/15x15/da8375/da8375.png),
 
-green_decrease: '#ff5e75' ![#ff5e75](https://placehold.co/15x15/ff5e75/ff5e75.png),
+green_increase: `#ffa875` ![#ffa875](https://placehold.co/15x15/ffa875/ffa875.png),
 
-blue_increase: '#ff8387' ![#ff8387](https://placehold.co/15x15/ff8387/ff8387.png),
+green_decrease: `#ff5e75` ![#ff5e75](https://placehold.co/15x15/ff5e75/ff5e75.png),
 
-blue_decrease: '#ff833a' ![#ff833a](https://placehold.co/15x15/ff833a/ff833a.png)
+blue_increase: `#ff8387` ![#ff8387](https://placehold.co/15x15/ff8387/ff8387.png),
+
+blue_decrease: `#ff833a` ![#ff833a](https://placehold.co/15x15/ff833a/ff833a.png)
