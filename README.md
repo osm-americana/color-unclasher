@@ -77,7 +77,7 @@ color-unclasher styles.json result.txt --export-pairs-path output.json
 
 Whats written to result.txt
 
-![The non-compliant pairs with their IDs and color at a particular zoom level, organized by type=fill or type=line, and types of color blindness](.github/r1.png)
+<img src="doc-image/r1.png" alt="The non-compliant pairs with their IDs and color at a particular zoom level, organized by type=fill or type=line, and types of color blindness"/>
 
 Whats written to output.json
 
@@ -157,7 +157,7 @@ color-unclasher style.json result.txt --pairs-to-ignore-path output.json
 
 Then the result written to result.txt would no longer have the pairs configured to ignore
 
-![The result is a lot shorter than before](.github/r2.png)
+<img src="doc-image/r2.png" alt="The result is a lot shorter than before"/>
 
 4. **Get suggested change of color for non-compliant pairs with --get-suggest**:
 
@@ -165,7 +165,7 @@ Then the result written to result.txt would no longer have the pairs configured 
 color-unclasher style.json result.txt --pairs-to-ignore-path output.json --get-suggest true
 ```
 
-![Get suggestion on change of color](.github/r3.png)
+<img src="doc-image/r3.png" alt="Get suggestion on change of color"/>
 
 Color on the right hand side will be modified. Due to how suggested colors are 
 generated, there is a bias for a increase in redness. Read the next section 
