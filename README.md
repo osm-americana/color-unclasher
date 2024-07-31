@@ -49,7 +49,11 @@ Not supported:
 
 3.  To check how a group of color looks for people with different types of color-blindness, go to https://color.adobe.com/create/color-accessibility and select Color Blind Safe on the left column.
 
-# Usage and flags
+# Installation, usage and flags
+
+```sh
+npm install color-unclasher
+```
 
 In terminal, provide the path to your style specification. If you would like to store the human readable analyzes result, enter a file path. Or else, result would be written to terminal.
 
