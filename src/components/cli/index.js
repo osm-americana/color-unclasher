@@ -14,7 +14,7 @@ export default async function commandLine(
   getSuggest
 ) {
   const layerTypes = ["fill", "line"];
-  const colorBlindTypes = [
+  const colorBlindModes = [
     "normal",
     "deuteranopia",
     "protanopia",
@@ -25,7 +25,7 @@ export default async function commandLine(
   const resultArray = processStyles(
     layerTypes,
     styles,
-    colorBlindTypes,
+    colorBlindModes,
     [minZoom, maxZoom],
     minDeltaE
   );
@@ -36,7 +36,7 @@ export default async function commandLine(
     nonCompliantPairsToIgnore = await readFile(parisToIgnorePath);
 
     try {
-      isValidStructure(nonCompliantPairsToIgnore, colorBlindTypes, layerTypes);
+      isValidStructure(nonCompliantPairsToIgnore, colorBlindModes, layerTypes);
     } catch (err) {
       console.log(
         "\nThe file fed for non-compliant pairs to ignore might not be in the right format."
@@ -51,10 +51,11 @@ export default async function commandLine(
 
   await outPutAnalysis(
     resultArray,
-    colorBlindTypes,
+    colorBlindModes,
     outPutPath,
     exportPairsPath,
     nonCompliantPairsToIgnore,
-    getSuggest
+    getSuggest,
+    minDeltaE
   );
 }

@@ -32,7 +32,7 @@ export async function writeFile(outputMessages, outputPath, message) {
   });
 }
 
-export function isValidStructure(obj, colorBlindTypes, layerTypes) {
+export function isValidStructure(obj, colorBlindModes, layerTypes) {
   function isArrayOfArraysOfArrays(item) {
     if (!Array.isArray(item)) return false;
     return item.every((subArray1) => {
@@ -47,7 +47,7 @@ export function isValidStructure(obj, colorBlindTypes, layerTypes) {
   let hasAtLeastOneField = false;
 
   // Check if the object has at least one of the required top-level fields
-  for (const field of colorBlindTypes) {
+  for (const field of colorBlindModes) {
     if (obj.hasOwnProperty(field)) {
       hasAtLeastOneField = true;
 

@@ -1,10 +1,10 @@
 import chroma from "chroma-js";
 import colorBlind from "color-blind";
 
-export default function checkContrastBetweenPairs(colorBlindTypes, uniqueColors, threshHold) {
+export default function checkContrastBetweenPairs(colorBlindModes, uniqueColors, threshHold) {
   const nonCompliantPairsByType = [];
 
-  colorBlindTypes.map((t) => {
+  colorBlindModes.map((t) => {
     let nonCompliantPairs = {};
 
     for (const [zoomLevel, colors] of uniqueColors) {

@@ -1,6 +1,6 @@
 import { isValidStructure } from "./IO";
 
-const colorBlindTypes = ["normal", "deuteranopia", "protanopia", "tritanopia"];
+const colorBlindModes = ["normal", "deuteranopia", "protanopia", "tritanopia"];
 const layerTypes = ["fill", "line"];
 
 test("pass valid structure", () => {
@@ -24,7 +24,7 @@ test("pass valid structure", () => {
   }
 }
 
-    expect(isValidStructure(object, colorBlindTypes, layerTypes)).toBe(true);
+    expect(isValidStructure(object, colorBlindModes, layerTypes)).toBe(true);
 });
 
 test("pass valid structure", () => {
@@ -38,7 +38,7 @@ test("pass valid structure", () => {
     }
   };
 
-  expect(isValidStructure(object, colorBlindTypes, layerTypes)).toBe(true);
+  expect(isValidStructure(object, colorBlindModes, layerTypes)).toBe(true);
 });
 
 test("pass valid structure", () => {
@@ -48,7 +48,7 @@ test("pass valid structure", () => {
     },
   };
 
-  expect(isValidStructure(object, colorBlindTypes, layerTypes)).toBe(true);
+  expect(isValidStructure(object, colorBlindModes, layerTypes)).toBe(true);
 });
 
 test("fail invalid structure", () => {
@@ -61,7 +61,7 @@ test("fail invalid structure", () => {
     },
   };
 
-  expect(isValidStructure(object, colorBlindTypes, layerTypes)).toBe(false);
+  expect(isValidStructure(object, colorBlindModes, layerTypes)).toBe(false);
 });
 
 test("fail invalid structure", () => {
@@ -74,7 +74,7 @@ test("fail invalid structure", () => {
     },
   };
 
-  expect(isValidStructure(object, colorBlindTypes, layerTypes)).toBe(false);
+  expect(isValidStructure(object, colorBlindModes, layerTypes)).toBe(false);
 });
 
 test("fail invalid structure", () => {
@@ -101,7 +101,7 @@ test("fail invalid structure", () => {
     },
   };
 
-  expect(isValidStructure(object, colorBlindTypes, layerTypes)).toBe(false);
+  expect(isValidStructure(object, colorBlindModes, layerTypes)).toBe(false);
 });
 
 test("fail invalid structure", () => {
@@ -114,5 +114,5 @@ test("fail invalid structure", () => {
     },
   };
 
-  expect(isValidStructure(object, colorBlindTypes, layerTypes)).toBe(false);
+  expect(isValidStructure(object, colorBlindModes, layerTypes)).toBe(false);
 });

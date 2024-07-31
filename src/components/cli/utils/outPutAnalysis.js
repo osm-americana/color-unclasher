@@ -4,11 +4,12 @@ import adjustColor from "./../../module/adjustColor.js";
 
 export default async function outPutAnalysis(
   resultArray,
-  colorBlindTypes,
+  colorBlindModes,
   outputPath,
   exportPairsPath,
   nonCompliantPairsToIgnore,
-  getSuggest
+  getSuggest,
+  minDeltaE
 ) {
   const outputMessagesToFileByType = [];
   console.log("\n");
@@ -32,7 +33,7 @@ export default async function outPutAnalysis(
     },
   };
 
-  colorBlindTypes.map((type, index) => {
+  colorBlindModes.map((mode, index) => {
     // output to file
     if (outputPath) {
       outputMessagesToFileByType.push(
@@ -41,34 +42,38 @@ export default async function outPutAnalysis(
           resultArray[2][0],
           resultArray[4][1][index][1],
           resultArray[2][1],
-          type,
+          mode,
           buildExportPairs(exportPairsPath),
-          exportPairs[type],
-          nonCompliantPairsToIgnore?.[type]
+          exportPairs[mode],
+          nonCompliantPairsToIgnore?.[mode],
+          getSuggest,
+          minDeltaE
         ).join("")
       );
       // output to terminal
     } else {
-      console.log("------", type, "------");
-      console.log("\n     type=fill\n");
+      console.log("------", mode, "------");
+      console.log("\n     mode=fill\n");
       writeResultToTerminal(
         resultArray[4][0][index][1],
         resultArray[2][0],
         buildExportPairs(exportPairsPath),
-        exportPairs[type].fill,
-        nonCompliantPairsToIgnore?.[type]?.["fill"],
-        type,
-        getSuggest
+        exportPairs[mode].fill,
+        nonCompliantPairsToIgnore?.[mode]?.["fill"],
+        mode,
+        getSuggest,
+        minDeltaE
       );
-      console.log("\n     type=line\n");
+      console.log("\n     mode=line\n");
       writeResultToTerminal(
         resultArray[4][1][index][1],
         resultArray[2][1],
         buildExportPairs(exportPairsPath),
-        exportPairs[type].line,
-        nonCompliantPairsToIgnore?.[type]?.["line"],
-        type,
-        getSuggest
+        exportPairs[mode].line,
+        nonCompliantPairsToIgnore?.[mode]?.["line"],
+        mode,
+        getSuggest,
+        minDeltaE
       );
       console.log("\n");
     }
@@ -111,8 +116,9 @@ function writeResultToTerminal(
   buildExportPairs,
   exportPairsCurrType,
   nonCompliantPairsToIgnore,
-  type,
-  getSuggest
+  mode,
+  getSuggest,
+  minDeltaE
 ) {
   Object.keys(nonCompliantPairs).forEach((key) => {
     const pairs = nonCompliantPairs[key];
@@ -179,8 +185,8 @@ function writeResultToTerminal(
       const result = adjustColor(
         colorsAtCurrZoom,
         indexOfPairsToIgnore,
-        type,
-        5.5
+        mode,
+        minDeltaE
       );
       if (result.length > 0) {
         const map1 = new Map();
@@ -203,12 +209,14 @@ function outputNoneCompliantPairs(
   fillColorToLayerIDByZoomLevel,
   lineNonCompliantPairs,
   lineColorToLayerIDByZoomLevel,
-  type,
+  mode,
   buildExportPairs,
   exportPairsType,
-  nonCompliantPairsToIgnore
+  nonCompliantPairsToIgnore,
+  getSuggest,
+  minDeltaE
 ) {
-  let outputMessages = [`------ ${type} ------\n`, "\n     type=fill\n"];
+  let outputMessages = [`------ ${mode} ------\n`, "\n     mode=fill\n"];
 
   pushPairsInformation(
     fillNonCompliantPairs,
@@ -216,10 +224,13 @@ function outputNoneCompliantPairs(
     outputMessages,
     buildExportPairs,
     exportPairsType.fill,
-    nonCompliantPairsToIgnore?.fill
+    nonCompliantPairsToIgnore?.fill,
+    mode,
+    getSuggest,
+    minDeltaE
   );
 
-  outputMessages.push("\n     type=line\n");
+  outputMessages.push("\n     mode=line\n");
 
   pushPairsInformation(
     lineNonCompliantPairs,
@@ -227,7 +238,10 @@ function outputNoneCompliantPairs(
     outputMessages,
     buildExportPairs,
     exportPairsType.line,
-    nonCompliantPairsToIgnore?.line
+    nonCompliantPairsToIgnore?.line,
+    mode,
+    getSuggest,
+    minDeltaE
   );
   outputMessages.push("\n");
 
@@ -240,10 +254,16 @@ function pushPairsInformation(
   outputMessages,
   buildExportPairs,
   exportPairsCurrType,
-  nonCompliantPairsToIgnore
+  nonCompliantPairsToIgnore,
+  mode,
+  getSuggest,
+  minDeltaE
 ) {
   Object.keys(pairsArray).forEach((key) => {
+    const colorsAtCurrZoom = Object.keys(colorToLayerIDByZoomLevel[key]);
+    const indexOfPairsToIgnore = [];
     const pairs = pairsArray[key];
+
     pairs.map((p) => {
       const color1 = p[0];
       const color2 = p[1];
@@ -256,6 +276,10 @@ function pushPairsInformation(
         nonCompliantPairsToIgnore[key] &&
         checkPairExist(nonCompliantPairsToIgnore[key], name1[0], name2[0])
       ) {
+        indexOfPairsToIgnore.push([
+          colorsAtCurrZoom.indexOf(color1),
+          colorsAtCurrZoom.indexOf(color2),
+        ]);
         return null;
       }
 
@@ -273,8 +297,12 @@ function pushPairsInformation(
          ]
          would result in two colors depending on the cases
          so we don't want to mark this pair as need more contrast */
-      if (Array.isArray(name1) && Array.isArray(name2)) {
+      if (Array.isArray(name1[0]) && Array.isArray(name2[0])) {
         if (name1[0][0] === name2[0][0]) {
+          indexOfPairsToIgnore.push([
+            colorsAtCurrZoom.indexOf(color1),
+            colorsAtCurrZoom.indexOf(color2),
+          ]);
           return null;
         }
       }
@@ -284,6 +312,27 @@ function pushPairsInformation(
       outputMessages.push(
         `Zoom ${key} [ "${name1}" ] ${color1} and [ "${name2}" ] ${color2} are too similar\n`
       );
+
+      if (getSuggest) {
+        const result = adjustColor(
+          colorsAtCurrZoom,
+          indexOfPairsToIgnore,
+          mode,
+          minDeltaE
+        );
+        if (result.length > 0) {
+          const map1 = new Map();
+          const keys = Object.keys(colorToLayerIDByZoomLevel[key]);
+          result.map((r) => {
+            const condition = colorToLayerIDByZoomLevel[key][keys[r[0]]];
+            map1.set(condition, [r[2]]);
+          });
+
+          for (const key of map1.keys()) {
+            outputMessages.push("   Change [ ", key, " ] to ", map1.get(key), "\n", "\n");
+          }
+        }
+      }
     });
   });
 }

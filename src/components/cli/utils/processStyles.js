@@ -4,7 +4,7 @@ import checkContrastBetweenPairs from "./checkContrast.js";
 export default function processStyles(
   layerTypes,
   data,
-  colorBlindTypes,
+  colorBlindModes,
   minMaxZoom,
   threshHold
 ) {
@@ -39,7 +39,7 @@ export default function processStyles(
     resultArray[3].push(getUniqueColors(resultArray[1][index]));
     resultArray[4].push(
       checkContrastBetweenPairs(
-        colorBlindTypes,
+        colorBlindModes,
         resultArray[3][index],
         threshHold
       )
