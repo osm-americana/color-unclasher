@@ -20,6 +20,7 @@ if (currentDir === dirname(entryScript)) {
   const maxZoom = parseInt(args["max-zoom"]) || 22;
   const parisToIgnorePath = args["pairs-to-ignore-path"] || null;
   const minDeltaE = parseFloat(args["min-deltaE"]) || 5.5;
+  const getSuggest = args["get-suggest"] || false;
   const [filePath, outPutPath] = args._;
 
   if (minZoom > maxZoom) {
@@ -57,7 +58,8 @@ if (currentDir === dirname(entryScript)) {
     minZoom,
     maxZoom,
     parisToIgnorePath,
-    minDeltaE
+    minDeltaE,
+    getSuggest
   );
 }
 

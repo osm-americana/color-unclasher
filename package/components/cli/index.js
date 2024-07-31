@@ -10,9 +10,9 @@ export default async function commandLine(
   minZoom,
   maxZoom,
   parisToIgnorePath,
-  minDeltaE
+  minDeltaE,
+  getSuggest
 ) {
-
   const layerTypes = ["fill", "line"];
   const colorBlindTypes = [
     "normal",
@@ -54,6 +54,7 @@ export default async function commandLine(
     colorBlindTypes,
     outPutPath,
     exportPairsPath,
-    nonCompliantPairsToIgnore
+    nonCompliantPairsToIgnore,
+    getSuggest
   );
 }

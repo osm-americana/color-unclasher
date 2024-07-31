@@ -66,6 +66,7 @@ To override default values or declare path to export or import data from, use th
 | --max-zoom | 22       |   The maximum zoom level |
 | --min-deltaE | 5.5       |   The minimum DeltaE for a compliant pair |
 | --pairs-to-ignore-path| null       |  The path to import non-compliant pairs to ignore |
+| --get-suggest | false | Get suggested change of color for non-compliant pairs |
 
 # Example workflow
 1.  **Run analysis in terminal with the flag --export-pairs-path**: Result in human readable format would be written to result.txt. output.json would be created for non-compliant pairs stored in a specific data structure.
@@ -158,7 +159,7 @@ Then the result written to result.txt would no longer have the pairs configured 
 
 ![The result is a lot shorter than before](.github/r2.png)
 
-4. **Get suggested change of color with --get-suggest**:
+4. **Get suggested change of color for non-compliant pairs with --get-suggest**:
 
 ```sh
 color-unclasher style.json result.txt --pairs-to-ignore-path output.json --get-suggest true
@@ -166,13 +167,31 @@ color-unclasher style.json result.txt --pairs-to-ignore-path output.json --get-s
 
 ![Get suggestion on change of color](.github/r3.png)
 
-# Get adjusted colors via module
+Color on the right hand side will be modified. Due to how suggested colors are 
+generated, there is a bias for a increase in redness. Read the next section 
+for more information.
+
+# Get adjusted colors
+
+Two exported functions, adjustRGB and adjustHSL are available to get suggested 
+colors on your own. They both suggest colors by increasing or decreasing red, 
+green, or blue, or hue, saturation, and lightness at a time. The returned
+object will contain suggestions that meet the min DeltaE threshold. 
+
+In automatic suggestions mentioned in example workflow, testing suggested colors
+with other existing colors will start with the first color in result, which would
+be color with red increase for RGB colors, and hue increase for HSL colors. Therefore,
+automatic suggestions have a bias for these two kind of colors.
+
+If you would like to view all suggested colors to pick a color on your own. 
+In your own JS file, use it as such: 
 
 ```js
 import ColorUnclasher from "color-unclasher";
 
 const color1 = "#a4a95b"; // wouldn't be modified
-const color2 = "#ff8375"; // be based on by adjusted colors 
+const color2 = "#ff8375"; //
+const minDeltaE = 7; // defaulted to 7
 
 /*
   Result:
@@ -185,5 +204,5 @@ const color2 = "#ff8375"; // be based on by adjusted colors
     blue_decrease: '#ff833a'
   }
 */
-const newColors = ColorUnclasher.adjustRGB(color1, color2, deuteranopia);
+const newColors = ColorUnclasher.adjustRGB(color1, color2, 'deuteranopia', minDeltaE);
 ```

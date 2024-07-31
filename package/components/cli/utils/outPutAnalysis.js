@@ -7,7 +7,8 @@ export default async function outPutAnalysis(
   colorBlindTypes,
   outputPath,
   exportPairsPath,
-  nonCompliantPairsToIgnore
+  nonCompliantPairsToIgnore,
+  getSuggest
 ) {
   const outputMessagesToFileByType = [];
   console.log("\n");
@@ -46,7 +47,7 @@ export default async function outPutAnalysis(
           nonCompliantPairsToIgnore?.[type]
         ).join("")
       );
-    // output to terminal
+      // output to terminal
     } else {
       console.log("------", type, "------");
       console.log("\n     type=fill\n");
@@ -56,7 +57,8 @@ export default async function outPutAnalysis(
         buildExportPairs(exportPairsPath),
         exportPairs[type].fill,
         nonCompliantPairsToIgnore?.[type]?.["fill"],
-        type
+        type,
+        getSuggest
       );
       console.log("\n     type=line\n");
       writeResultToTerminal(
@@ -65,7 +67,8 @@ export default async function outPutAnalysis(
         buildExportPairs(exportPairsPath),
         exportPairs[type].line,
         nonCompliantPairsToIgnore?.[type]?.["line"],
-        type
+        type,
+        getSuggest
       );
       console.log("\n");
     }
@@ -108,7 +111,8 @@ function writeResultToTerminal(
   buildExportPairs,
   exportPairsCurrType,
   nonCompliantPairsToIgnore,
-  type
+  type,
+  getSuggest
 ) {
   Object.keys(nonCompliantPairs).forEach((key) => {
     const pairs = nonCompliantPairs[key];
@@ -171,22 +175,24 @@ function writeResultToTerminal(
       );
     });
 
-    const result = adjustColor(
-      colorsAtCurrZoom,
-      indexOfPairsToIgnore,
-      type,
-      5.5
-    );
-    if (result.length > 0) {
-      const map1 = new Map();
-      const keys = Object.keys(colorToLayerIDByZoomLevel[key]);
-      result.map((r) => {
-        const condition = colorToLayerIDByZoomLevel[key][keys[r[0]]];
-        map1.set(condition, [r[2]]);
-      });
+    if (getSuggest) {
+      const result = adjustColor(
+        colorsAtCurrZoom,
+        indexOfPairsToIgnore,
+        type,
+        5.5
+      );
+      if (result.length > 0) {
+        const map1 = new Map();
+        const keys = Object.keys(colorToLayerIDByZoomLevel[key]);
+        result.map((r) => {
+          const condition = colorToLayerIDByZoomLevel[key][keys[r[0]]];
+          map1.set(condition, [r[2]]);
+        });
 
-      for (const key of map1.keys()) {
-        console.log("   Change", key, "to", map1.get(key), '\n');
+        for (const key of map1.keys()) {
+          console.log("   Change", key, "to", map1.get(key), "\n");
+        }
       }
     }
   });
