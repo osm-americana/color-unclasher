@@ -68,6 +68,19 @@ To override default values or declare path to export or import data from, use th
 | --pairs-to-ignore-path| null       |  The path to import non-compliant pairs to ignore |
 | --get-suggest | false | Get suggested change of color for non-compliant pairs |
 
+# Build instructions
+
+After cloning the repository:
+
+```sh
+npm install
+npm link
+cd test
+npm link color-unclasher
+```
+
+Then you can make changes to the code in src folder and test in test folder
+
 # Example workflow
 1.  **Run analysis in terminal with the flag --export-pairs-path**: Result in human readable format would be written to result.txt. output.json would be created for non-compliant pairs stored in a specific data structure.
 
@@ -168,21 +181,8 @@ color-unclasher style.json result.txt --pairs-to-ignore-path output.json --get-s
 <img src="doc-image/r3.png" alt="Get suggestion on change of color"/>
 
 Color on the right hand side will be modified. Due to how suggested colors are 
-generated, there is a bias for a increase in redness. Read the last section 
+generated, there is a bias for a increase in redness. Read the next section 
 for more information.
-
-# Dev
-
-After downloading the code
-
-```sh
-npm install
-npm link
-cd test
-npm link color-unclasher
-```
-
-Then you can make changes to the code in src folder and test in test folder
 
 # Get adjusted colors
 
