@@ -168,8 +168,21 @@ color-unclasher style.json result.txt --pairs-to-ignore-path output.json --get-s
 <img src="doc-image/r3.png" alt="Get suggestion on change of color"/>
 
 Color on the right hand side will be modified. Due to how suggested colors are 
-generated, there is a bias for a increase in redness. Read the next section 
+generated, there is a bias for a increase in redness. Read the last section 
 for more information.
+
+# Dev
+
+After downloading the code
+
+```sh
+npm install
+npm link
+cd test
+npm link color-unclasher
+```
+
+Then you can make changes to the code in src folder and test in test folder
 
 # Get adjusted colors
 
