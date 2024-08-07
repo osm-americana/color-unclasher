@@ -1,5 +1,5 @@
-import { getColorModel } from "../utils/color";
-import adjustRGB from "./adjustRGB.js";
+import { getColorModel } from "../src/components/utils/color.js";
+import adjustRGB from "../src/components/module/adjustRGB.js";
 import tinycolor from "tinycolor2";
 import chroma from "chroma-js";
 import colorBlind from "color-blind";

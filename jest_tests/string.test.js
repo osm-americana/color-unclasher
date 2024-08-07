@@ -1,4 +1,4 @@
-import { checkPairExist } from "./string";
+import { checkPairExist } from "../src/components/cli/utils/string";
 
 test("return true", () => {
   const data = [[["line2"], ["line1"]]];

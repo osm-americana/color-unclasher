@@ -1,5 +1,5 @@
-import { getZoomLevelColorsArray } from "./processStyles";
-import {writeFile} from './IO';
+import { getZoomLevelColorsArray } from "../src/components/cli/utils/processStyles";
+import {writeFile} from '../src/components/cli/utils/IO';
 
 test("correctly get fill colors", () => {
   const style = {

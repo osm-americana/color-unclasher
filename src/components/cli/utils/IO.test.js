@@ -5,26 +5,26 @@ const layerTypes = ["fill", "line"];
 
 test("pass valid structure", () => {
   const object = {
-  "normal": {
-    "fill": {
-      "6": [[["airport"], ["grass"]]],
-      "7": [[["airport"], ["grass"]]],
-      "8": [[["airport"], ["grass"]]]
+    normal: {
+      fill: {
+        6: [[["airport"], ["grass"]]],
+        7: [[["airport"], ["grass"]]],
+        8: [[["airport"], ["grass"]]],
+      },
+      line: {},
     },
-    "line": {}
-  },
-  "deuteranopia": {},
-  "protanopia": {
-    "fill": {},
-    "line": {}
-  },
-  "tritanopia": {
-    "fill": {},
-    "line": {}
-  }
-}
+    deuteranopia: {},
+    protanopia: {
+      fill: {},
+      line: {},
+    },
+    tritanopia: {
+      fill: {},
+      line: {},
+    },
+  };
 
-    expect(isValidStructure(object, colorBlindModes, layerTypes)).toBe(true);
+  expect(isValidStructure(object, colorBlindModes, layerTypes)).toBe(true);
 });
 
 test("pass valid structure", () => {
@@ -34,8 +34,8 @@ test("pass valid structure", () => {
         6: [[["airport"], ["grass"]]],
         7: [[["airport"], ["grass"]]],
         8: [[["airport"], ["grass"]]],
-      }
-    }
+      },
+    },
   };
 
   expect(isValidStructure(object, colorBlindModes, layerTypes)).toBe(true);
@@ -68,7 +68,7 @@ test("fail invalid structure", () => {
   const object = {
     normal: {
       fill: {
-        6: [["airport"], ["grass"]]
+        6: [["airport"], ["grass"]],
       },
       line: {},
     },
@@ -104,15 +104,17 @@ test("fail invalid structure", () => {
   expect(isValidStructure(object, colorBlindModes, layerTypes)).toBe(false);
 });
 
-test("fail invalid structure", () => {
+test("fail invalid structure with thrown error", () => {
   const object = {
     normal: {
       fill: {
-        'lll': [[['11'], ["grass"]]],
+        lll: [[["11"], ["grass"]]],
       },
       line: {},
     },
   };
 
-  expect(isValidStructure(object, colorBlindModes, layerTypes)).toBe(false);
+  () => {expect(isValidStructure(object, colorBlindModes, layerTypes)).toThrow(
+    "For type normal and type=fill, the zoom level lll isn't a number"
+  )};
 });

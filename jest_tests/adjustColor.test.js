@@ -1,4 +1,4 @@
-import adjustColor from "./adjustColor.js";
+import adjustColor from "../src/components/module/adjustColor";
 
 test("adjust simple colors w/ adjustRGB", () => {
   const colors = [
@@ -56,7 +56,7 @@ test("adjust simple colors w/ adjustHSL", () => {
   ]);
 });
 
-test.only("adjust simple colors with ignored pairs", () => {
+test("adjust simple colors with ignored pairs 1", () => {
   const colors = [
     "hsl(30, 44%, 96%)",
     "hsl(0, 0%, 75%)",
@@ -111,7 +111,7 @@ test.only("adjust simple colors with ignored pairs", () => {
   ]);
 });
 
-test.only("adjust simple colors with ignored pairs", () => {
+test("adjust simple colors with ignored pairs 2", () => {
   const colors = [
     "hsl(30, 44%, 96%)",
     "hsl(0, 0%, 75%)",
@@ -134,5 +134,19 @@ test.only("adjust simple colors with ignored pairs", () => {
       "normal",
       5.5
     )
-  ).toStrictEqual([]);
+  ).toStrictEqual([
+    [
+      7,
+      "hsl(211, 50%, 85%)",
+      "hsl(199, 50%, 85%)",
+      {
+        hue_decrease: "hsl(199, 50%, 85%)",
+        hue_increase: "----",
+        lightness_decrease: "hsl(211, 50%, 77%)",
+        lightness_increase: "hsl(211, 50%, 91%)",
+        saturation_decrease: "hsl(211, 25%, 85%)",
+        saturation_increase: "----",
+      }
+    ]
+  ]);
 });
