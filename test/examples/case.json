@@ -1,0 +1,126 @@
+{
+  "version": 8,
+  "sources": {
+    "my-source": {
+      "type": "geojson",
+      "data": "path/to/your/data.geojson"
+    }
+  },
+  "layers": [
+    {
+      "id": "background",
+      "type": "background",
+      "paint": { "background-color": "hsl(30, 44%, 96%)" },
+      "layout": { "visibility": "visible" }
+    },
+    {
+      "id": "airport",
+      "type": "fill",
+      "source-layer": "aeroway",
+      "paint": {
+        "fill-color": "hsl(0, 0%, 75%)"
+      }
+    },
+    {
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "transportation",
+      "id": "line2",
+      "minzoom": 11,
+      "paint": {
+        "line-color": [
+          "interpolate",
+          ["exponential", 1.2],
+          ["zoom"],
+          11,
+          "#FFDD00",
+          14,
+          "hsl(211, 50%, 85%)"
+        ],
+        "line-blur": 0.5
+      }
+    },
+    {
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "transportation",
+      "id": "road_casing_surface_all_,get,class,tertiary_!,coalesce,get,ramp,0,1_,coalesce,get,expressway,0,1",
+      "minzoom": 11,
+      "paint": {
+        "line-color": [
+          "interpolate",
+          ["exponential", 1.2],
+          ["zoom"],
+          11,
+          "#FFDDDD",
+          18,
+          "hsl(211, 50%, 85%)"
+        ],
+        "line-blur": 0.5
+      }
+    },
+    {
+      "id": "airline",
+      "type": "fill",
+      "source-layer": "aeroway",
+      "paint": {
+        "fill-color": "#FFDD00"
+      }
+    },
+    {
+      "id": "landuse_hospital",
+      "type": "fill",
+      "source-layer": "landuse",
+      "paint": {
+        "fill-color": "#FFDDDD"
+      }
+    },
+    {
+      "id": "ocean",
+      "type": "fill",
+      "source-layer": "water",
+      "paint": {
+        "fill-color": {
+          "stops": [
+            [7, "rgba(133,192,249,0.5)"],
+            [8, "rgba(15,32,128,1)"]
+          ]
+        }
+      }
+    },
+    {
+      "id": "grass",
+      "type": "fill",
+      "source-layer": "vegetation",
+      "paint": {
+        "fill-color": [
+          "interpolate",
+          ["exponential", 1.2],
+          ["zoom"],
+          5,
+          "hsl(0, 0%, 75%)",
+          15,
+          "hsl(0, 0%, 23%)"
+        ]
+      }
+    },
+    {
+      "id": "water",
+      "type": "fill",
+      "paint": {
+        "fill-color": [
+          "case",
+          [
+            "any",
+            ["==", ["get", "intermittent"], 1],
+            ["==", ["get", "brunnel"], "tunnel"]
+          ],
+          "hsl(211, 60%, 85%)",
+          "hsl(211, 50%, 85%)"
+        ]
+      },
+      "source": "openmaptiles",
+      "source-layer": "water"
+    }
+  ]
+}
