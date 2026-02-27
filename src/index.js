@@ -1,69 +1,64 @@
 #!/usr/bin/env node
 
-import commandLine from "./components/cli/index.js";
-import adjustRGB from "./components/module/adjustRGB.js";
-import adjustHSL from "./components/module/adjustHSL.js";
+import extractStyle from "./utils/extractStyle.js";
+import processStyles from "./utils/processStyles.js";
+import outPutAnalysis from "./utils/outPutAnalysis.js";
+import { readFile, isValidStructure } from "./utils/IO.js";
 
-import { fileURLToPath } from "url";
-import { dirname } from "path";
-import { createRequire } from "module";
-import fs from "fs";
+export default async function commandLine(
+  filePath,
+  outPutPath,
+  exportPairsPath,
+  minZoom,
+  maxZoom,
+  parisToIgnorePath,
+  minDeltaE,
+  getSuggest
+) {
+  const layerTypes = ["fill", "line"];
+  const colorBlindModes = ["normal", "deuteranopia", "protanopia", "tritanopia"];
 
-const currentDir = dirname(fileURLToPath(import.meta.url));
-const require = createRequire(import.meta.url);
-const entryScript = require.resolve(process.argv[1]);
+  try {
+    // 1. Parallelize Initial Data Fetching
+    // We fetch styles and ignore-pairs simultaneously to save time
+    const [styles, nonCompliantPairsToIgnore] = await Promise.all([
+      extractStyle(filePath, layerTypes),
+      parisToIgnorePath ? readFile(parisToIgnorePath) : Promise.resolve(null)
+    ]);
 
-if (currentDir === dirname(entryScript)) {
-  const args = require("yargs").argv;
-  const exportPairsPath = args["export-pairs-path"] || null;
-  const minZoom = parseInt(args["min-zoom"]) || 0;
-  const maxZoom = parseInt(args["max-zoom"]) || 22;
-  const parisToIgnorePath = args["pairs-to-ignore-path"] || null;
-  const minDeltaE = parseFloat(args["min-deltaE"]) || 5.5;
-  const getSuggest = args["get-suggest"] || false;
-  const [filePath, outPutPath] = args._;
-
-  if (minZoom > maxZoom) {
-    console.error("Max zoom must be greater than or equal to min zoom");
-    process.exit(1);
-  }
-
-  if (!filePath) {
-    console.error("Please provide a path to the style specification");
-    process.exit(1);
-  }
-
-  if (parisToIgnorePath) {
-    // make sure the pairs to ignore file exists
-    fs.access(parisToIgnorePath, fs.F_OK, (err) => {
-      if (err) {
-        console.error("Error reading pairs to ignore file:", err);
-        process.exit(1);
+    // 2. Immediate Structure Validation
+    if (nonCompliantPairsToIgnore) {
+      try {
+        isValidStructure(nonCompliantPairsToIgnore, colorBlindModes, layerTypes);
+      } catch (err) {
+        console.error("\n[Error] The ignore-pairs file format is invalid.");
+        console.error("Check documentation or omit the file to proceed.");
+        console.error(err.message);
+        return; // Terminate early
       }
-    });
-  }
-
-  // make sure the style file exists
-  fs.access(filePath, fs.F_OK, (err) => {
-    if (err) {
-      console.error("Error reading file:", err);
-      process.exit(1);
     }
-  });
 
-  commandLine(
-    filePath,
-    outPutPath,
-    exportPairsPath,
-    minZoom,
-    maxZoom,
-    parisToIgnorePath,
-    minDeltaE,
-    getSuggest
-  );
+    // 3. Style Processing (CPU Intensive)
+    const resultArray = processStyles(
+      layerTypes,
+      styles,
+      colorBlindModes,
+      [minZoom, maxZoom],
+      minDeltaE
+    );
+
+    // 4. Final Output Generation
+    await outPutAnalysis(
+      resultArray,
+      colorBlindModes,
+      outPutPath,
+      exportPairsPath,
+      nonCompliantPairsToIgnore,
+      getSuggest,
+      minDeltaE
+    );
+
+  } catch (globalErr) {
+    console.error("An unexpected error occurred during analysis:", globalErr);
+  }
 }
-
-export default {
-  adjustRGB,
-  adjustHSL,
-};
